@@ -13,9 +13,13 @@ export PATH="$HOME/.local/bin:$PATH"
 # Verify uv installation
 echo "✓ uv version: $(uv --version)"
 
-# Install Python dependencies
+# Create virtual environment and install Python dependencies
+echo "📦 Creating virtual environment..."
+uv venv .venv
+source .venv/bin/activate
+
 echo "📦 Installing Python dependencies..."
-uv pip install --system -e ".[dev]"
+uv pip install -e ".[dev]"
 
 echo "✓ Python dependencies installed"
 
