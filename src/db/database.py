@@ -1,9 +1,9 @@
 """Database connection management for Oil Well Time Series API."""
 
 import sqlite3
+from collections.abc import Generator
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Generator
 
 from src.config import DATABASE_PATH
 
@@ -16,14 +16,14 @@ def init_database() -> None:
     schema_path = Path(__file__).parent / "schema.sql"
 
     with sqlite3.connect(DATABASE_PATH) as conn:
-        with open(schema_path, "r") as f:
+        with open(schema_path) as f:
             schema_sql = f.read()
         conn.executescript(schema_sql)
         conn.commit()
 
 
 @contextmanager
-def get_db_connection() -> Generator[sqlite3.Connection, None, None]:
+def get_db_connection() -> Generator[sqlite3.Connection]:
     """Get a database connection context manager.
 
     Yields:
@@ -45,7 +45,7 @@ def get_db_connection() -> Generator[sqlite3.Connection, None, None]:
         conn.close()
 
 
-def get_db_connection_for_fastapi() -> Generator[sqlite3.Connection, None, None]:
+def get_db_connection_for_fastapi() -> Generator[sqlite3.Connection]:
     """FastAPI dependency for database connections.
 
     This function is used with FastAPI's Depends() to inject database connections

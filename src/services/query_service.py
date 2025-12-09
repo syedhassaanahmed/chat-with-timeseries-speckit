@@ -50,7 +50,7 @@ class QueryService:
             """
             SELECT timestamp, well_id, metric_name, value, quality_flag
             FROM timeseries_data
-            WHERE well_id = ? 
+            WHERE well_id = ?
               AND metric_name = ?
               AND timestamp BETWEEN ? AND ?
             ORDER BY timestamp

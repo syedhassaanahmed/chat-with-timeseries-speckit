@@ -9,7 +9,7 @@ Generates realistic oil well time-series data with:
 """
 
 import random
-from datetime import date, datetime, timedelta
+from datetime import datetime, timedelta
 from typing import Any
 
 import numpy as np
@@ -29,7 +29,6 @@ from src.config import (
     MAINTENANCE_PROBABILITY,
     METRIC_CONFIGS,
     NOISE_AMPLITUDE,
-    NUM_METRICS,
     NUM_WELLS,
     OPERATORS,
     SEASONAL_AMPLITUDE,

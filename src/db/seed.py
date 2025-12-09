@@ -7,6 +7,8 @@ import sqlite3
 import sys
 from pathlib import Path
 
+import pandas as pd
+
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
@@ -166,7 +168,7 @@ def seed_metrics(metrics: list[dict]) -> None:
     conn.close()
 
 
-def seed_timeseries_data(df) -> None:
+def seed_timeseries_data(df: pd.DataFrame) -> None:
     """Insert time-series data into the database.
 
     Args:

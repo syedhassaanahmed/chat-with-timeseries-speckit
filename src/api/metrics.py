@@ -36,4 +36,4 @@ def list_metrics(
             metadata={"generated_at": datetime.utcnow().isoformat() + "Z"},
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}") from e

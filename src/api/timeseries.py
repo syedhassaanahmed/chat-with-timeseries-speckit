@@ -48,9 +48,9 @@ def get_raw_data(
         # Handle validation errors (well not found, metric not found, invalid range)
         error_msg = str(e)
         if "not found" in error_msg.lower():
-            raise HTTPException(status_code=404, detail=error_msg)
+            raise HTTPException(status_code=404, detail=error_msg) from e
         else:
-            raise HTTPException(status_code=400, detail=error_msg)
+            raise HTTPException(status_code=400, detail=error_msg) from e
     except Exception as e:
         # Handle unexpected errors
-        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}") from e

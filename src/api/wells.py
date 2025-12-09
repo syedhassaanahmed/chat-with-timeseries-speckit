@@ -37,7 +37,7 @@ def list_wells(
             metadata={"generated_at": datetime.utcnow().isoformat() + "Z"},
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}") from e
 
 
 @router.get("/{well_id}", response_model=Well)
@@ -67,4 +67,4 @@ def get_well(
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}") from e

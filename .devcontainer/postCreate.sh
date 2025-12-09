@@ -23,6 +23,12 @@ uv pip install -e ".[dev]"
 
 echo "✓ Python dependencies installed"
 
+# Install git hooks
+echo "🪝 Installing git hooks..."
+git config core.hooksPath .githooks
+chmod +x .githooks/pre-commit
+echo "✓ Git hooks installed"
+
 # Initialize database
 echo "🗄️  Initializing database with synthetic data..."
 if [ -f "src/db/seed.py" ]; then

@@ -80,9 +80,11 @@ MAINTENANCE_DURATION_MAX = 7  # days
 API_TITLE = "Oil Well Time Series API"
 API_VERSION = "1.0.0"
 API_DESCRIPTION = """
-A public REST API that serves synthetic oil well time-series data for demonstration and testing purposes.
+A public REST API that serves synthetic oil well time-series data for demonstration
+and testing purposes.
 
-This API provides access to 2 years of realistic synthetic operational data for 5 sample oil wells.
+This API provides access to 1 year of realistic synthetic operational data for 3
+sample oil wells.
 """
 
 # CORS settings
