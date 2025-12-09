@@ -18,12 +18,12 @@
 
 **Purpose**: Project initialization and Dev Container setup (Constitution Principle VII requirement)
 
-- [ ] T001 Create project structure: src/{models,services,api,db}, tests/{contract,integration,unit}
-- [ ] T002 Create pyproject.toml with Python 3.14, FastAPI, uvicorn, pydantic, numpy, pandas, pytest, httpx, ruff
-- [ ] T003 [P] Create .devcontainer/devcontainer.json with Python 3.14 base image, uv installation, VS Code extensions
-- [ ] T004 [P] Create .devcontainer/postCreate.sh script to install uv, dependencies, and initialize database
-- [ ] T005 [P] Create ruff.toml with linting rules (E, W, F, I, N, UP, ANN, B, C4, SIM)
-- [ ] T006 Create README.md with project overview, quick start link, and API description
+- [X] T001 Create project structure: src/{models,services,api,db}, tests/{contract,integration,unit}
+- [X] T002 Create pyproject.toml with Python 3.14, FastAPI, uvicorn, pydantic, numpy, pandas, pytest, httpx, ruff
+- [X] T003 [P] Create .devcontainer/devcontainer.json with Python 3.14 base image, uv installation, VS Code extensions
+- [X] T004 [P] Create .devcontainer/postCreate.sh script to install uv, dependencies, and initialize database
+- [X] T005 [P] Create ruff.toml with linting rules (E, W, F, I, N, UP, ANN, B, C4, SIM)
+- [X] T006 Create README.md with project overview, quick start link, and API description
 
 ---
 
@@ -33,13 +33,13 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T007 Create src/config.py with database path, data generation constants, and environment configuration
-- [ ] T008 Create src/db/schema.sql with wells, metrics, and timeseries_data tables per data-model.md
-- [ ] T009 Create src/db/database.py with SQLite connection management and get_db_connection() dependency
-- [ ] T010 [P] Create src/models/__init__.py (package initialization)
-- [ ] T011 [P] Create src/services/__init__.py (package initialization)
-- [ ] T012 [P] Create src/api/__init__.py (package initialization)
-- [ ] T013 [P] Create src/db/__init__.py (package initialization)
+- [X] T007 Create src/config.py with database path, data generation constants, and environment configuration
+- [X] T008 Create src/db/schema.sql with wells, metrics, and timeseries_data tables per data-model.md
+- [X] T009 Create src/db/database.py with SQLite connection management and get_db_connection() dependency
+- [X] T010 [P] Create src/models/__init__.py (package initialization)
+- [X] T011 [P] Create src/services/__init__.py (package initialization)
+- [X] T012 [P] Create src/api/__init__.py (package initialization)
+- [X] T013 [P] Create src/db/__init__.py (package initialization)
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -53,49 +53,49 @@
 
 ### Data Layer for User Story 1
 
-- [ ] T014 [P] [US1] Create src/models/well.py with Well Pydantic model (well_id pattern validation, enums for well_type)
-- [ ] T015 [P] [US1] Create src/models/metric.py with Metric Pydantic model (data_type enum, optional typical_min/max)
-- [ ] T016 [P] [US1] Create src/models/timeseries.py with TimeSeriesDataPoint Pydantic model (datetime validation, quality_flag enum)
-- [ ] T017 [P] [US1] Create src/models/responses.py with RawDataResponse Pydantic model (data array + metadata)
+- [X] T014 [P] [US1] Create src/models/well.py with Well Pydantic model (well_id pattern validation, enums for well_type)
+- [X] T015 [P] [US1] Create src/models/metric.py with Metric Pydantic model (data_type enum, optional typical_min/max)
+- [X] T016 [P] [US1] Create src/models/timeseries.py with TimeSeriesDataPoint Pydantic model (datetime validation, quality_flag enum)
+- [X] T017 [P] [US1] Create src/models/responses.py with RawDataResponse Pydantic model (data array + metadata)
 
 ### Synthetic Data Generation for User Story 1
 
-- [ ] T018 [US1] Create src/services/data_generator.py with SyntheticDataGenerator class
-- [ ] T019 [US1] Implement generate_well_metadata() method returning 5 wells with varied characteristics per FR-009
-- [ ] T020 [US1] Implement generate_metric_definitions() method returning 8 metrics per FR-008
-- [ ] T021 [US1] Implement generate_timeseries_data() method with numpy/pandas per research.md decision #1
-- [ ] T022 [US1] Apply decline curves: production(t) = initial_rate * exp(-decline_rate * t)
-- [ ] T023 [US1] Add seasonal variations: seasonal_factor = 1 + 0.1 * sin(2π * day_of_year / 365)
-- [ ] T024 [US1] Add random noise (±5%) using np.random.normal()
-- [ ] T025 [US1] Simulate maintenance periods (random 2-7 day shutdowns per well)
-- [ ] T026 [US1] Generate correlated metrics (gas correlates with oil, pressure decreases with depletion)
+- [X] T018 [US1] Create src/services/data_generator.py with SyntheticDataGenerator class
+- [X] T019 [US1] Implement generate_well_metadata() method returning 5 wells with varied characteristics per FR-009
+- [X] T020 [US1] Implement generate_metric_definitions() method returning 8 metrics per FR-008
+- [X] T021 [US1] Implement generate_timeseries_data() method with numpy/pandas per research.md decision #1
+- [X] T022 [US1] Apply decline curves: production(t) = initial_rate * exp(-decline_rate * t)
+- [X] T023 [US1] Add seasonal variations: seasonal_factor = 1 + 0.1 * sin(2π * day_of_year / 365)
+- [X] T024 [US1] Add random noise (±5%) using np.random.normal()
+- [X] T025 [US1] Simulate maintenance periods (random 2-7 day shutdowns per well)
+- [X] T026 [US1] Generate correlated metrics (gas correlates with oil, pressure decreases with depletion)
 
 ### Database Initialization for User Story 1
 
-- [ ] T027 [US1] Create src/db/seed.py script to execute schema.sql and populate database
-- [ ] T028 [US1] Implement seed_wells() function to insert 5 wells into wells table
-- [ ] T029 [US1] Implement seed_metrics() function to insert 8 metrics into metrics table
-- [ ] T030 [US1] Implement seed_timeseries_data() function to insert ~42M rows into timeseries_data table
-- [ ] T031 [US1] Add progress logging and estimated time remaining during seed operation
-- [ ] T032 [US1] Verify indexes (idx_well_metric_time, idx_timestamp) are created per research.md decision #2
+- [X] T027 [US1] Create src/db/seed.py script to execute schema.sql and populate database
+- [X] T028 [US1] Implement seed_wells() function to insert 5 wells into wells table
+- [X] T029 [US1] Implement seed_metrics() function to insert 8 metrics into metrics table
+- [X] T030 [US1] Implement seed_timeseries_data() function to insert ~42M rows into timeseries_data table
+- [X] T031 [US1] Add progress logging and estimated time remaining during seed operation
+- [X] T032 [US1] Verify indexes (idx_well_metric_time, idx_timestamp) are created per research.md decision #2
 
 ### Query Service for User Story 1
 
-- [ ] T033 [US1] Create src/services/query_service.py with QueryService class
-- [ ] T034 [US1] Implement get_raw_timeseries() method with SQL query per research.md decision #2
-- [ ] T035 [US1] Add input validation: well_id format, metric_name exists, timestamp format ISO 8601
-- [ ] T036 [US1] Implement response metadata: total_points, data_completeness calculation per FR-013
-- [ ] T037 [US1] Add error handling: 404 for non-existent well/metric, 400 for invalid parameters per FR-010
+- [X] T033 [US1] Create src/services/query_service.py with QueryService class
+- [X] T034 [US1] Implement get_raw_timeseries() method with SQL query per research.md decision #2
+- [X] T035 [US1] Add input validation: well_id format, metric_name exists, timestamp format ISO 8601
+- [X] T036 [US1] Implement response metadata: total_points, data_completeness calculation per FR-013
+- [X] T037 [US1] Add error handling: 404 for non-existent well/metric, 400 for invalid parameters per FR-010
 
 ### API Endpoints for User Story 1
 
-- [ ] T038 [US1] Create src/api/main.py with FastAPI app initialization, CORS, and OpenAPI metadata
-- [ ] T039 [US1] Create src/api/timeseries.py router with /wells/{well_id}/data/raw endpoint
-- [ ] T040 [US1] Implement GET /wells/{well_id}/data/raw handler with dependency injection per research.md decision #3
-- [ ] T041 [US1] Add Query parameters: metric_name (required), start_timestamp (required), end_timestamp (required)
-- [ ] T042 [US1] Wire QueryService.get_raw_timeseries() to endpoint handler
-- [ ] T043 [US1] Return RawDataResponse with data array and metadata per contracts/openapi.yaml
-- [ ] T044 [US1] Add error responses: 400 (ValidationError), 404 (NotFound), 500 (InternalServerError)
+- [X] T038 [US1] Create src/api/main.py with FastAPI app initialization, CORS, and OpenAPI metadata
+- [X] T039 [US1] Create src/api/timeseries.py router with /wells/{well_id}/data/raw endpoint
+- [X] T040 [US1] Implement GET /wells/{well_id}/data/raw handler with dependency injection per research.md decision #3
+- [X] T041 [US1] Add Query parameters: metric_name (required), start_timestamp (required), end_timestamp (required)
+- [X] T042 [US1] Wire QueryService.get_raw_timeseries() to endpoint handler
+- [X] T043 [US1] Return RawDataResponse with data array and metadata per contracts/openapi.yaml
+- [X] T044 [US1] Add error responses: 400 (ValidationError), 404 (NotFound), 500 (InternalServerError)
 
 ### Testing for User Story 1
 
@@ -170,26 +170,26 @@
 
 ### Query Service for User Story 3
 
-- [ ] T078 [US3] Add get_all_wells() method to src/services/query_service.py returning all 5 wells
-- [ ] T079 [US3] Add get_well_by_id(well_id) method returning single well or None
-- [ ] T080 [US3] Add get_all_metrics() method returning all 8 metrics
-- [ ] T081 [US3] Add get_metrics_for_well(well_id) method returning only metrics with data for that well per US3 scenario 3
-- [ ] T082 [US3] Include response metadata: total_count, generated_at timestamp per FR-013
+- [X] T078 [US3] Add get_all_wells() method to src/services/query_service.py returning all 5 wells
+- [X] T079 [US3] Add get_well_by_id(well_id) method returning single well or None
+- [X] T080 [US3] Add get_all_metrics() method returning all 8 metrics
+- [X] T081 [US3] Add get_metrics_for_well(well_id) method returning only metrics with data for that well per US3 scenario 3
+- [X] T082 [US3] Include response metadata: total_count, generated_at timestamp per FR-013
 
 ### Data Layer for User Story 3
 
-- [ ] T083 [P] [US3] Add WellListResponse to src/models/responses.py (wells array + total_count + metadata)
-- [ ] T084 [P] [US3] Add MetricListResponse to src/models/responses.py (metrics array + total_count + metadata)
+- [X] T083 [P] [US3] Add WellListResponse to src/models/responses.py (wells array + total_count + metadata)
+- [X] T084 [P] [US3] Add MetricListResponse to src/models/responses.py (metrics array + total_count + metadata)
 
 ### API Endpoints for User Story 3
 
-- [ ] T085 [US3] Create src/api/wells.py router with GET /wells endpoint
-- [ ] T086 [US3] Implement GET /wells handler returning WellListResponse per contracts/openapi.yaml
-- [ ] T087 [US3] Add GET /wells/{well_id} endpoint returning single Well or HTTP 404
-- [ ] T088 [US3] Create src/api/metrics.py router with GET /metrics endpoint
-- [ ] T089 [US3] Implement GET /metrics handler returning MetricListResponse
-- [ ] T090 [US3] Add GET /wells/{well_id}/metrics endpoint returning metrics for specific well
-- [ ] T091 [US3] Register wells and metrics routers in src/api/main.py
+- [X] T085 [US3] Create src/api/wells.py router with GET /wells endpoint
+- [X] T086 [US3] Implement GET /wells handler returning WellListResponse per contracts/openapi.yaml
+- [X] T087 [US3] Add GET /wells/{well_id} endpoint returning single Well or HTTP 404
+- [X] T088 [US3] Create src/api/metrics.py router with GET /metrics endpoint
+- [X] T089 [US3] Implement GET /metrics handler returning MetricListResponse
+- [X] T090 [US3] Add GET /wells/{well_id}/metrics endpoint returning metrics for specific well
+- [X] T091 [US3] Register wells and metrics routers in src/api/main.py
 
 ### Testing for User Story 3
 
