@@ -15,7 +15,7 @@ echo "✓ uv version: $(uv --version)"
 
 # Create virtual environment and install Python dependencies
 echo "📦 Creating virtual environment..."
-uv venv .venv
+uv venv .venv --allow-existing
 source .venv/bin/activate
 
 echo "📦 Installing Python dependencies..."

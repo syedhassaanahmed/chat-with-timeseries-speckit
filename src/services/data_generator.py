@@ -59,11 +59,11 @@ class SyntheticDataGenerator:
         """
         wells = []
         for i in range(NUM_WELLS):
-            well_id = f"WELL-{i+1:03d}"
+            well_id = f"WELL-{i + 1:03d}"
             wells.append(
                 {
                     "well_id": well_id,
-                    "well_name": f"{random.choice(FIELDS)} {chr(65+i)} {i+1}",
+                    "well_name": f"{random.choice(FIELDS)} {chr(65 + i)} {i + 1}",
                     "latitude": round(random.uniform(28.0, 32.0), 4),
                     "longitude": round(random.uniform(-97.0, -93.0), 4),
                     "operator": random.choice(OPERATORS),
@@ -303,9 +303,7 @@ class SyntheticDataGenerator:
         while current_date < timestamps[-1]:
             # Check if maintenance should start (based on probability)
             if random.random() < MAINTENANCE_PROBABILITY:
-                duration_days = random.randint(
-                    MAINTENANCE_DURATION_MIN, MAINTENANCE_DURATION_MAX
-                )
+                duration_days = random.randint(MAINTENANCE_DURATION_MIN, MAINTENANCE_DURATION_MAX)
                 start = current_date
                 end = start + timedelta(days=duration_days)
                 maintenance_periods.append((start, end))

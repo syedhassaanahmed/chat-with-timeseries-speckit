@@ -14,7 +14,7 @@ def init_database() -> None:
     Creates tables and indexes if they don't exist.
     """
     schema_path = Path(__file__).parent / "schema.sql"
-    
+
     with sqlite3.connect(DATABASE_PATH) as conn:
         with open(schema_path, "r") as f:
             schema_sql = f.read()

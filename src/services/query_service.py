@@ -234,9 +234,7 @@ class QueryService:
         if not cursor.fetchone():
             raise ValueError(f"Metric not found: {metric_name}")
 
-    def _validate_timestamp_range(
-        self, start_timestamp: datetime, end_timestamp: datetime
-    ) -> None:
+    def _validate_timestamp_range(self, start_timestamp: datetime, end_timestamp: datetime) -> None:
         """Validate that timestamp range is valid.
 
         Args:
@@ -276,9 +274,7 @@ class QueryService:
         expected_points = int(time_diff.total_seconds() / 60) + 1
 
         # Calculate data completeness
-        data_completeness = (
-            (total_points / expected_points * 100) if expected_points > 0 else 0.0
-        )
+        data_completeness = (total_points / expected_points * 100) if expected_points > 0 else 0.0
 
         return {
             "well_id": well_id,
