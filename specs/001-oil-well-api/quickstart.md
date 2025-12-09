@@ -96,12 +96,12 @@ curl http://localhost:8000/wells | jq
       "operator": "Demo Energy Corp",
       "field_name": "North Field",
       "well_type": "producer",
-      "spud_date": "2022-01-15",
-      "data_start_date": "2023-01-01",
-      "data_end_date": "2024-12-31"
+      "spud_date": "2023-12-09",
+      "data_start_date": "2024-12-09",
+      "data_end_date": "2025-12-09"
     }
   ],
-  "total_count": 5,
+  "total_count": 3,
   "metadata": {"generated_at": "2024-12-09T10:30:00Z"}
 }
 ```

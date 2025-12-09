@@ -15,10 +15,10 @@ DATA_DIR.mkdir(exist_ok=True)
 DB_CONNECTION_STRING = f"sqlite:///{DATABASE_PATH}"
 
 # Data generation constants
-NUM_WELLS = 5
-NUM_METRICS = 8
-DATA_START_DATE = "2023-01-01"
-DATA_END_DATE = "2024-12-31"
+NUM_WELLS = 3
+NUM_METRICS = 5
+DATA_START_DATE = "2024-12-09"
+DATA_END_DATE = "2025-12-09"
 DATA_FREQUENCY_MINUTES = 1  # Minute-level granularity
 
 # Well configuration
@@ -42,13 +42,6 @@ METRIC_CONFIGS = {
         "typical_max": 2000,
         "data_type": "numeric",
     },
-    "water_production_rate": {
-        "display_name": "Water Production Rate",
-        "unit": "bbl/day",
-        "typical_min": 0,
-        "typical_max": 300,
-        "data_type": "numeric",
-    },
     "wellhead_pressure": {
         "display_name": "Wellhead Pressure",
         "unit": "psi",
@@ -69,20 +62,6 @@ METRIC_CONFIGS = {
         "typical_min": 0,
         "typical_max": 1500,
         "data_type": "numeric",
-    },
-    "choke_setting": {
-        "display_name": "Choke Setting",
-        "unit": "percent",
-        "typical_min": 0,
-        "typical_max": 100,
-        "data_type": "numeric",
-    },
-    "well_status": {
-        "display_name": "Well Status",
-        "unit": "categorical",
-        "typical_min": None,
-        "typical_max": None,
-        "data_type": "categorical",
     },
 }
 

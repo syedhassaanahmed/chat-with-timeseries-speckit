@@ -61,8 +61,8 @@
 ### Synthetic Data Generation for User Story 1
 
 - [X] T018 [US1] Create src/services/data_generator.py with SyntheticDataGenerator class
-- [X] T019 [US1] Implement generate_well_metadata() method returning 5 wells with varied characteristics per FR-009
-- [X] T020 [US1] Implement generate_metric_definitions() method returning 8 metrics per FR-008
+- [X] T019 [US1] Implement generate_well_metadata() method returning 3 wells with varied characteristics per FR-009
+- [X] T020 [US1] Implement generate_metric_definitions() method returning 5 metrics per FR-008
 - [X] T021 [US1] Implement generate_timeseries_data() method with numpy/pandas per research.md decision #1
 - [X] T022 [US1] Apply decline curves: production(t) = initial_rate * exp(-decline_rate * t)
 - [X] T023 [US1] Add seasonal variations: seasonal_factor = 1 + 0.1 * sin(2π * day_of_year / 365)
@@ -73,9 +73,9 @@
 ### Database Initialization for User Story 1
 
 - [X] T027 [US1] Create src/db/seed.py script to execute schema.sql and populate database
-- [X] T028 [US1] Implement seed_wells() function to insert 5 wells into wells table
-- [X] T029 [US1] Implement seed_metrics() function to insert 8 metrics into metrics table
-- [X] T030 [US1] Implement seed_timeseries_data() function to insert ~42M rows into timeseries_data table
+- [X] T028 [US1] Implement seed_wells() function to insert 3 wells into wells table
+- [X] T029 [US1] Implement seed_metrics() function to insert 5 metrics into metrics table
+- [X] T030 [US1] Implement seed_timeseries_data() function to insert ~7.9M rows into timeseries_data table
 - [X] T031 [US1] Add progress logging and estimated time remaining during seed operation
 - [X] T032 [US1] Verify indexes (idx_well_metric_time, idx_timestamp) are created per research.md decision #2
 
@@ -170,9 +170,9 @@
 
 ### Query Service for User Story 3
 
-- [X] T078 [US3] Add get_all_wells() method to src/services/query_service.py returning all 5 wells
+- [X] T078 [US3] Add get_all_wells() method to src/services/query_service.py returning all 3 wells
 - [X] T079 [US3] Add get_well_by_id(well_id) method returning single well or None
-- [X] T080 [US3] Add get_all_metrics() method returning all 8 metrics
+- [X] T080 [US3] Add get_all_metrics() method returning all 5 metrics
 - [X] T081 [US3] Add get_metrics_for_well(well_id) method returning only metrics with data for that well per US3 scenario 3
 - [X] T082 [US3] Include response metadata: total_count, generated_at timestamp per FR-013
 

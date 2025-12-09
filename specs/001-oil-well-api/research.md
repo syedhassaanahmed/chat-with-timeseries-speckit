@@ -31,8 +31,8 @@
 - ❌ Real-time generation per query: Too slow, inconsistent data across queries
 
 **Data Volume Estimate**:
-- 5 wells × 8 metrics × 2 years × 525,600 min/year = ~42M data points
-- Estimated storage: ~1.26 GB (30 bytes per row × 42M rows)
+- 3 wells × 5 metrics × 1 year × 525,600 min/year = ~7.9M data points
+- Estimated storage: ~2.5 GB (30 bytes per row × 7.9M rows)
 
 ---
 

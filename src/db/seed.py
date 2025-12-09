@@ -15,12 +15,47 @@ from src.db.database import init_database
 from src.services.data_generator import SyntheticDataGenerator
 
 
+def check_if_data_exists() -> bool:
+    """Check if the database already contains seeded data.
+
+    Returns:
+        True if data exists, False otherwise
+    """
+    if not DATABASE_PATH.exists():
+        return False
+
+    conn = sqlite3.connect(DATABASE_PATH)
+    cursor = conn.cursor()
+
+    try:
+        # Check if timeseries_data table has any rows
+        cursor.execute("SELECT COUNT(*) FROM timeseries_data")
+        count = cursor.fetchone()[0]
+        return count > 0
+    except sqlite3.OperationalError:
+        # Table doesn't exist yet
+        return False
+    finally:
+        conn.close()
+
+
 def seed_database() -> None:
     """Seed the database with synthetic well data, metrics, and time-series data."""
     print("=" * 60)
     print("Oil Well Time Series API - Database Seeding")
     print("=" * 60)
     print()
+
+    # Check if data already exists
+    if check_if_data_exists():
+        print("ℹ️  Database already contains data. Skipping seeding.")
+        print(f"   Database location: {DATABASE_PATH}")
+        print(f"   Database size: {DATABASE_PATH.stat().st_size / (1024**3):.2f} GB")
+        print()
+        print("   To reseed, delete the database file and run this script again:")
+        print(f"   rm {DATABASE_PATH}")
+        print()
+        return
 
     # Initialize database schema
     print("📋 Step 1/4: Initializing database schema...")
@@ -47,7 +82,7 @@ def seed_database() -> None:
 
     # Generate and insert time-series data
     print("⏱️  Step 4/4: Generating time-series data...")
-    print("⚠️  This may take several minutes (~42M rows)...")
+    print("⚠️  This may take several minutes (~7.9M rows)...")
     df_timeseries = generator.generate_timeseries_data(wells, metrics)
     seed_timeseries_data(df_timeseries)
     print(f"✓ Inserted {len(df_timeseries):,} data points")

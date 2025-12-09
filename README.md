@@ -104,7 +104,7 @@ ruff check --fix src/ tests/
 
 - **Python 3.14** - Latest Python version
 - **FastAPI** - Modern async web framework
-- **SQLite** - Embedded database (~1.26 GB for 42M data points)
+- **SQLite** - Embedded database (~2.5 GB for 7.9M data points)
 - **uv** - Fast Python package manager
 - **ruff** - Fast Python linter and formatter
 - **pytest** - Testing framework

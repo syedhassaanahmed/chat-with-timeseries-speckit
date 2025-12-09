@@ -29,8 +29,7 @@
             "source.organizeImports": "explicit"
           }
         },
-        "ruff.lint.args": ["--config=ruff.toml"],
-        "ruff.format.args": ["--config=ruff.toml"]
+        "ruff.configurationPreference": "filesystemFirst"
       }
     }
   },

@@ -77,8 +77,8 @@ A developer exploring the API wants to discover what sample wells and metrics ar
 - **FR-004**: System MUST return aggregated data in JSON format with: date or time period label, computed value, aggregation type, unit, and data point count used in calculation.
 - **FR-005**: System MUST provide an endpoint to list all available wells with metadata including well ID, well name, location (latitude, longitude), and date range of available data.
 - **FR-006**: System MUST provide an endpoint to list all available metrics with metadata including metric name, description, unit of measurement, and data type (numeric, boolean, categorical).
-- **FR-007**: System MUST generate realistic synthetic time series data for at least 5 sample wells covering approximately 2 years of historical data.
-- **FR-008**: System MUST include at least the following metric types: oil_production_rate (bbl/day), gas_production_rate (mcf/day), water_production_rate (bbl/day), wellhead_pressure (psi), gas_injection_rate (mcf/day), choke_setting (percent), well_status (online/offline/maintenance).
+- **FR-007**: System MUST generate realistic synthetic time series data for at least 3 sample wells covering approximately 1 year of historical data.
+- **FR-008**: System MUST include at least the following metric types: oil_production_rate (bbl/day), gas_production_rate (mcf/day), wellhead_pressure (psi), tubing_pressure (psi), gas_injection_rate (mcf/day).
 - **FR-009**: System MUST vary synthetic data characteristics across wells (e.g., different production profiles, seasonal variations, maintenance periods, gradual decline) to simulate realistic oilfield diversity.
 - **FR-010**: System MUST return appropriate HTTP status codes: 200 for successful queries, 404 for non-existent wells or metrics, 400 for invalid parameters, 500 for server errors.
 - **FR-011**: System MUST validate all query parameters (well IDs, metric names, date formats, aggregation types) and return clear error messages for invalid inputs.
