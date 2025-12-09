@@ -144,8 +144,6 @@ paths:
       description: |
         Retrieve timestamped data points for a specific well and metric over a time range.
         Returns minute-level granularity data with timestamps in ISO 8601 UTC format.
-        
-        **Performance**: Queries spanning up to 90 days return in <2 seconds (SC-001).
       operationId: getRawData
       tags:
         - Time Series Data

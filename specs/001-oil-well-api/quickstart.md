@@ -184,8 +184,6 @@ end_timestamp=2024-01-01T01:00:00Z" | jq
 }
 ```
 
-**Performance**: 1-hour query returns instantly. 90-day query returns in <2 seconds.
-
 ---
 
 ### Query Aggregated Time Series Data
@@ -228,8 +226,6 @@ aggregation_type=daily_average" | jq
 }
 ```
 
-**Performance**: 2-year daily aggregation returns in <1 second.
-
 ---
 
 ## Running Tests
@@ -262,13 +258,6 @@ pytest tests/integration/ -v
 ```bash
 # Validate OpenAPI spec compliance
 pytest tests/contract/test_openapi_compliance.py -v
-```
-
-### Load Tests
-
-```bash
-# Test 50 concurrent users
-pytest tests/load/test_concurrent_load.py -v
 ```
 
 ---
@@ -310,8 +299,7 @@ src/
 tests/
 ├── contract/         # OpenAPI schema validation tests
 ├── integration/      # API endpoint integration tests
-├── unit/             # Unit tests for services and models
-└── load/             # Performance and load tests
+└── unit/             # Unit tests for services and models
 
 specs/001-oil-well-api/
 ├── spec.md           # Feature specification
@@ -368,18 +356,6 @@ Expected output should show `idx_well_metric_time` and `idx_timestamp`.
 3. **Review Implementation Plan**: See [plan.md](./plan.md) for architecture and technical decisions
 4. **Contribute**: (Future) See CONTRIBUTING.md for contribution guidelines
 5. **Deploy**: (Future) See deployment guide for production setup
-
----
-
-## Performance Benchmarks
-
-As per success criteria (spec.md):
-
-| Query Type | Time Range | Performance Target | Actual |
-|------------|------------|-------------------|--------|
-| Raw data | 90 days | <2 seconds (SC-001) | ~1.5s |
-| Aggregated (daily) | 2 years | <1 second (SC-002) | ~0.7s |
-| Concurrent users | 50 users | No errors (SC-006) | ✅ Pass |
 
 ---
 

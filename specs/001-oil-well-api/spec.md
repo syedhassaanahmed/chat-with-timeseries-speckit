@@ -103,14 +103,11 @@ A developer exploring the API wants to discover what sample wells and metrics ar
 
 ### Measurable Outcomes
 
-- **SC-001**: Users can successfully retrieve raw time series data for any well and metric within 2 seconds for queries spanning up to 90 days of minute-level data.
-- **SC-002**: Users can successfully retrieve aggregated data (daily averages) for any well over a 2-year period within 1 second.
-- **SC-003**: API returns properly formatted JSON responses that conform to documented schemas for 100% of valid requests (verified by automated contract tests).
-- **SC-004**: Synthetic data exhibits realistic characteristics: production values within industry-typical ranges, gradual decline trends, seasonal variations, and maintenance periods for all 5 sample wells (verified by data quality analysis).
-- **SC-005**: All API endpoints return appropriate HTTP status codes and error messages for invalid inputs with 100% consistency (verified by negative test cases).
-- **SC-006**: System successfully handles at least 50 concurrent API requests without errors or significant performance degradation (verified by load testing).
-- **SC-007**: API documentation (OpenAPI specification and README) covers 100% of endpoints with complete parameter descriptions, example requests, and example responses.
-- **SC-008**: Developers can successfully integrate and retrieve data from any endpoint within 15 minutes of first reading the documentation (verified by user acceptance testing with 3+ external developers).
+- **SC-001**: API returns properly formatted JSON responses that conform to documented schemas for 100% of valid requests (verified by automated contract tests).
+- **SC-002**: Synthetic data exhibits realistic characteristics: production values within industry-typical ranges, gradual decline trends, seasonal variations, and maintenance periods for all 5 sample wells (verified by data quality analysis).
+- **SC-003**: All API endpoints return appropriate HTTP status codes and error messages for invalid inputs with 100% consistency (verified by negative test cases).
+- **SC-004**: API documentation (OpenAPI specification and README) covers 100% of endpoints with complete parameter descriptions, example requests, and example responses.
+- **SC-005**: Developers can successfully integrate and retrieve data from any endpoint within 15 minutes of first reading the documentation (verified by user acceptance testing with 3+ external developers).
 
 ## Assumptions *(optional)*
 
