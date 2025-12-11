@@ -104,7 +104,7 @@
 - [X] T047 [P] [US1] Add test_get_raw_data_invalid_well_id() expecting HTTP 404
 - [X] T048 [P] [US1] Add test_get_raw_data_invalid_timestamp_format() expecting HTTP 400
 - [X] T049 [P] [US1] Add test_get_raw_data_empty_result() for time range with no data
-- [ ] T050 [P] [US1] Create timeseries-api/tests/unit/test_data_generator.py to verify decline curves, seasonal variations, noise
+- [X] T050 [P] [US1] Create timeseries-api/tests/unit/test_data_generator.py to verify decline curves, seasonal variations, noise
 - [ ] T051 [P] [US1] Create timeseries-api/tests/unit/test_query_service.py to test get_raw_timeseries() with mock database
 
 **Checkpoint**: User Story 1 complete - raw time-series data retrieval fully functional and independently testable
@@ -119,44 +119,44 @@
 
 ### Data Layer for User Story 2
 
-- [ ] T052 [P] [US2] Create timeseries-api/src/models/aggregated.py with AggregatedDataPoint Pydantic model (aggregation_type enum)
-- [ ] T053 [P] [US2] Add AggregatedDataResponse to timeseries-api/src/models/responses.py (data array + metadata)
+- [X] T052 [P] [US2] Create timeseries-api/src/models/aggregated.py with AggregatedDataPoint Pydantic model (aggregation_type enum)
+- [X] T053 [P] [US2] Add AggregatedDataResponse to timeseries-api/src/models/responses.py (data array + metadata)
 
 ### Aggregation Service for User Story 2
 
-- [ ] T054 [US2] Create timeseries-api/src/services/aggregation.py with AggregationService class
-- [ ] T055 [US2] Implement compute_daily_average() method using SQL AVG() per research.md decision #2
-- [ ] T056 [US2] Implement compute_daily_max() method using SQL MAX()
-- [ ] T057 [US2] Implement compute_daily_min() method using SQL MIN()
-- [ ] T058 [US2] Implement compute_daily_sum() method using SQL SUM()
-- [ ] T059 [US2] Implement compute_monthly_average() method with DATE grouping by month
-- [ ] T060 [US2] Add data_completeness calculation: (actual_points / expected_points) * 100
-- [ ] T061 [US2] Include min_value, max_value, data_point_count in each aggregated result per FR-004
+- [X] T054 [US2] Create timeseries-api/src/services/aggregation.py with AggregationService class
+- [X] T055 [US2] Implement compute_daily_average() method using SQL AVG() per research.md decision #2
+- [X] T056 [US2] Implement compute_daily_max() method using SQL MAX()
+- [X] T057 [US2] Implement compute_daily_min() method using SQL MIN()
+- [X] T058 [US2] Implement compute_daily_sum() method using SQL SUM()
+- [X] T059 [US2] Implement compute_monthly_average() method with DATE grouping by month
+- [X] T060 [US2] Add data_completeness calculation: (actual_points / expected_points) * 100
+- [X] T061 [US2] Include min_value, max_value, data_point_count in each aggregated result per FR-004
 
 ### Query Service Extension for User Story 2
 
-- [ ] T062 [US2] Add get_aggregated_timeseries() method to timeseries-api/src/services/query_service.py
-- [ ] T063 [US2] Validate aggregation_type against enum: daily_average, daily_max, daily_min, daily_sum, monthly_average
-- [ ] T064 [US2] Route to appropriate AggregationService method based on aggregation_type
-- [ ] T065 [US2] Implement response metadata: total_periods, average_data_completeness per FR-013
-- [ ] T066 [US2] Handle gaps in data: compute from available data, indicate completeness in metadata per US2 scenario 3
+- [X] T062 [US2] Add get_aggregated_timeseries() method to timeseries-api/src/services/query_service.py
+- [X] T063 [US2] Validate aggregation_type against enum: daily_average, daily_max, daily_min, daily_sum, monthly_average
+- [X] T064 [US2] Route to appropriate AggregationService method based on aggregation_type
+- [X] T065 [US2] Implement response metadata: total_periods, average_data_completeness per FR-013
+- [X] T066 [US2] Handle gaps in data: compute from available data, indicate completeness in metadata per US2 scenario 3
 
 ### API Endpoints for User Story 2
 
-- [ ] T067 [US2] Add GET /wells/{well_id}/data/aggregated endpoint to timeseries-api/src/api/timeseries.py
-- [ ] T068 [US2] Add Query parameters: metric_name, start_date, end_date, aggregation_type
-- [ ] T069 [US2] Wire QueryService.get_aggregated_timeseries() to endpoint handler
-- [ ] T070 [US2] Return AggregatedDataResponse per contracts/openapi.yaml
-- [ ] T071 [US2] Add validation: date format (YYYY-MM-DD), aggregation_type enum per FR-011
+- [X] T067 [US2] Add GET /wells/{well_id}/data/aggregated endpoint to timeseries-api/src/api/timeseries.py
+- [X] T068 [US2] Add Query parameters: metric_name, start_date, end_date, aggregation_type
+- [X] T069 [US2] Wire QueryService.get_aggregated_timeseries() to endpoint handler
+- [X] T070 [US2] Return AggregatedDataResponse per contracts/openapi.yaml
+- [X] T071 [US2] Add validation: date format (YYYY-MM-DD), aggregation_type enum per FR-011
 
 ### Testing for User Story 2
 
-- [ ] T072 [P] [US2] Add timeseries-api/tests/integration/test_aggregated_api.py with test_get_aggregated_daily_average()
-- [ ] T073 [P] [US2] Add test_get_aggregated_daily_max() verifying MAX aggregation
-- [ ] T074 [P] [US2] Add test_get_aggregated_monthly_average() verifying monthly grouping
-- [ ] T075 [P] [US2] Add test_get_aggregated_with_data_gaps() verifying data_completeness < 100%
-- [ ] T076 [P] [US2] Add test_get_aggregated_invalid_aggregation_type() expecting HTTP 400
-- [ ] T077 [P] [US2] Create timeseries-api/tests/unit/test_aggregation.py to test each aggregation method with mock data
+- [X] T072 [P] [US2] Add timeseries-api/tests/integration/test_aggregated_api.py with test_get_aggregated_daily_average()
+- [X] T073 [P] [US2] Add test_get_aggregated_daily_max() verifying MAX aggregation
+- [X] T074 [P] [US2] Add test_get_aggregated_monthly_average() verifying monthly grouping
+- [X] T075 [P] [US2] Add test_get_aggregated_with_data_gaps() verifying data_completeness < 100%
+- [X] T076 [P] [US2] Add test_get_aggregated_invalid_aggregation_type() expecting HTTP 400
+- [X] T077 [P] [US2] Create timeseries-api/tests/unit/test_aggregation.py to test each aggregation method with mock data
 
 **Checkpoint**: User Stories 1 AND 2 complete - both raw and aggregated data retrieval independently functional
 
@@ -210,21 +210,21 @@
 
 ### Documentation
 
-- [ ] T098 [P] Verify FastAPI auto-generates OpenAPI docs at /docs and /redoc per SC-007
-- [ ] T099 [P] Add docstrings to all service methods and API endpoints per Constitution Principle III
-- [ ] T100 [P] Update README.md with API overview, endpoints summary, link to quickstart.md
+- [X] T098 [P] Verify FastAPI auto-generates OpenAPI docs at /docs and /redoc per SC-007
+- [X] T099 [P] Add docstrings to all service methods and API endpoints per Constitution Principle III
+- [X] T100 [P] Update README.md with API overview, endpoints summary, link to quickstart.md
 
 ### Code Quality
 
-- [ ] T101 Run ruff check and ruff format on entire codebase, fix all issues
-- [ ] T102 Run pytest with --cov flag, verify >80% coverage per Constitution Principle IV
-- [ ] T103 Verify all contract tests pass (OpenAPI schema compliance) per SC-003
+- [X] T101 Run ruff check and ruff format on entire codebase, fix all issues
+- [X] T102 Run pytest with --cov flag, verify >80% coverage per Constitution Principle IV
+- [X] T103 Verify all contract tests pass (OpenAPI schema compliance) per SC-003
 
 ### Final Validation
 
-- [ ] T104 Test Dev Container build and database initialization per Constitution Principle VII
-- [ ] T105 Verify all error responses return appropriate HTTP status codes per SC-005
-- [ ] T106 Manual smoke test: start server, call each endpoint, verify responses per SC-008
+- [X] T104 Test Dev Container build and database initialization per Constitution Principle VII
+- [X] T105 Verify all error responses return appropriate HTTP status codes per SC-005
+- [X] T106 Manual smoke test: start server, call each endpoint, verify responses per SC-008
 
 ---
 

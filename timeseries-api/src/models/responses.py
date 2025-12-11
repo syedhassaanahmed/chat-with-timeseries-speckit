@@ -4,6 +4,7 @@ from datetime import UTC, datetime
 
 from pydantic import BaseModel, Field
 
+from src.models.aggregated import AggregatedDataPoint
 from src.models.metric import Metric
 from src.models.timeseries import TimeSeriesDataPoint
 from src.models.well import Well
@@ -123,6 +124,53 @@ class RawDataResponse(BaseModel):
                         "end_timestamp": "2024-01-31T23:59:59Z",
                         "total_points": 44640,
                         "data_completeness": 99.8,
+                    },
+                }
+            ]
+        }
+    }
+
+
+class AggregatedDataResponse(BaseModel):
+    """Response model for aggregated time-series data queries.
+
+    Attributes:
+        data: List of aggregated data points (one per time period)
+        metadata: Query context and statistics (well_id, metric_name,
+                  aggregation_type, start/end dates, total_periods,
+                  average_data_completeness)
+    """
+
+    data: list[AggregatedDataPoint]
+    metadata: dict = Field(..., description="Query context and statistics")
+
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "data": [
+                        {
+                            "date": "2024-01-01",
+                            "time_period": "2024-01-01",
+                            "well_id": "WELL-001",
+                            "metric_name": "oil_production_rate",
+                            "aggregated_value": 248.3,
+                            "aggregation_type": "daily_average",
+                            "unit": "bbl/day",
+                            "data_point_count": 1440,
+                            "min_value": 230.1,
+                            "max_value": 265.8,
+                            "data_completeness": 100.0,
+                        }
+                    ],
+                    "metadata": {
+                        "well_id": "WELL-001",
+                        "metric_name": "oil_production_rate",
+                        "aggregation_type": "daily_average",
+                        "start_date": "2024-01-01",
+                        "end_date": "2024-01-31",
+                        "total_periods": 31,
+                        "average_data_completeness": 99.5,
                     },
                 }
             ]

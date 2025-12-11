@@ -37,8 +37,6 @@ select = [
 
 # Ignore specific rules
 ignore = [
-    "ANN101",  # Missing type annotation for self in method
-    "ANN102",  # Missing type annotation for cls in classmethod
     "ANN401",  # Dynamically typed expressions (Any) are disallowed
     "B008",    # FastAPI Depends() and Query() in function defaults (false positive)
 ]

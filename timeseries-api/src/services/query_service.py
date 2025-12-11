@@ -4,12 +4,14 @@ Handles business logic for querying wells, metrics, and time-series data.
 """
 
 import sqlite3
-from datetime import datetime
+from datetime import date, datetime
 from typing import Any
 
+from src.models.aggregated import AggregatedDataPoint, AggregationType
 from src.models.metric import Metric
 from src.models.timeseries import TimeSeriesDataPoint
 from src.models.well import Well
+from src.services.aggregation import AggregationService
 
 
 class QueryService:
@@ -327,4 +329,142 @@ class QueryService:
             "end_timestamp": end_timestamp.strftime("%Y-%m-%dT%H:%M:%SZ"),
             "total_points": total_points,
             "data_completeness": round(data_completeness, 2),
+        }
+
+    def get_aggregated_timeseries(
+        self,
+        db: sqlite3.Connection,
+        well_id: str,
+        metric_name: str,
+        start_date: date,
+        end_date: date,
+        aggregation_type: str,
+    ) -> dict[str, Any]:
+        """Query aggregated time-series data for a specific well and metric.
+
+        Args:
+            db: Database connection
+            well_id: Well identifier (e.g., "WELL-001")
+            metric_name: Metric identifier (e.g., "oil_production_rate")
+            start_date: Start date for aggregation
+            end_date: End date for aggregation
+            aggregation_type: Type of aggregation (daily_average, daily_max, etc.)
+
+        Returns:
+            Dictionary with 'data' (list of AggregatedDataPoint) and 'metadata'
+
+        Raises:
+            ValueError: If well_id or metric_name doesn't exist
+            ValueError: If aggregation_type is invalid
+            ValueError: If date range is invalid
+        """
+        # Validate inputs
+        self._validate_well_exists(db, well_id)
+        self._validate_metric_exists(db, metric_name)
+        self._validate_aggregation_type(aggregation_type)
+        self._validate_date_range(start_date, end_date)
+
+        # Get unit for this metric
+        cursor = db.cursor()
+        cursor.execute(
+            "SELECT unit_of_measurement FROM metrics WHERE metric_name = ?", (metric_name,)
+        )
+        unit_row = cursor.fetchone()
+        unit = unit_row[0] if unit_row else "unknown"
+
+        # Create aggregation service and compute aggregation
+        agg_service = AggregationService(db)
+
+        # Route to appropriate aggregation method
+        aggregation_map = {
+            AggregationType.DAILY_AVERAGE.value: agg_service.compute_daily_average,
+            AggregationType.DAILY_MAX.value: agg_service.compute_daily_max,
+            AggregationType.DAILY_MIN.value: agg_service.compute_daily_min,
+            AggregationType.DAILY_SUM.value: agg_service.compute_daily_sum,
+            AggregationType.MONTHLY_AVERAGE.value: agg_service.compute_monthly_average,
+        }
+
+        compute_func = aggregation_map[aggregation_type]
+        data_points = compute_func(
+            well_id=well_id,
+            metric_name=metric_name,
+            start_date=start_date,
+            end_date=end_date,
+            unit=unit,
+        )
+
+        # Calculate metadata
+        metadata = self._calculate_aggregated_data_metadata(
+            well_id, metric_name, aggregation_type, start_date, end_date, data_points
+        )
+
+        return {"data": data_points, "metadata": metadata}
+
+    def _validate_aggregation_type(self, aggregation_type: str) -> None:
+        """Validate that aggregation type is supported.
+
+        Args:
+            aggregation_type: Type of aggregation
+
+        Raises:
+            ValueError: If aggregation_type is invalid
+        """
+        valid_types = [e.value for e in AggregationType]
+        if aggregation_type not in valid_types:
+            raise ValueError(
+                f"Invalid aggregation_type: {aggregation_type}. "
+                f"Must be one of: {', '.join(valid_types)}"
+            )
+
+    def _validate_date_range(self, start_date: date, end_date: date) -> None:
+        """Validate that date range is valid.
+
+        Args:
+            start_date: Start date
+            end_date: End date
+
+        Raises:
+            ValueError: If range is invalid
+        """
+        if start_date > end_date:
+            raise ValueError("start_date must be before or equal to end_date")
+
+    def _calculate_aggregated_data_metadata(
+        self,
+        well_id: str,
+        metric_name: str,
+        aggregation_type: str,
+        start_date: date,
+        end_date: date,
+        data_points: list[AggregatedDataPoint],
+    ) -> dict[str, Any]:
+        """Calculate metadata for aggregated time-series query response.
+
+        Args:
+            well_id: Well identifier
+            metric_name: Metric identifier
+            aggregation_type: Type of aggregation
+            start_date: Start date
+            end_date: End date
+            data_points: List of aggregated data points returned
+
+        Returns:
+            Dictionary with metadata fields
+        """
+        total_periods = len(data_points)
+
+        # Calculate average data completeness across all periods
+        if data_points:
+            avg_completeness = sum(dp.data_completeness for dp in data_points) / len(data_points)
+        else:
+            avg_completeness = 0.0
+
+        return {
+            "well_id": well_id,
+            "metric_name": metric_name,
+            "aggregation_type": aggregation_type,
+            "start_date": start_date.isoformat(),
+            "end_date": end_date.isoformat(),
+            "total_periods": total_periods,
+            "average_data_completeness": round(avg_completeness, 2),
         }
