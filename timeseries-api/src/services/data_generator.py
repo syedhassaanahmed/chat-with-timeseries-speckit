@@ -153,7 +153,7 @@ class SyntheticDataGenerator:
                 values = self._add_random_noise(values)
 
                 # Apply maintenance periods (set to near-zero)
-                values = self._apply_maintenance_periods(values, maintenance_periods)
+                values = self._apply_maintenance_periods(values, timestamps, maintenance_periods)
 
                 # Ensure non-negative values for production metrics
                 if metric_name in [
@@ -298,17 +298,29 @@ class SyntheticDataGenerator:
         return maintenance_periods
 
     def _apply_maintenance_periods(
-        self, values: np.ndarray, maintenance_periods: list[tuple[datetime, datetime]]
+        self,
+        values: np.ndarray,
+        timestamps: pd.DatetimeIndex,
+        maintenance_periods: list[tuple[datetime, datetime]],
     ) -> np.ndarray:
         """Set values to near-zero during maintenance periods.
 
         Args:
             values: Base values
+            timestamps: Timestamp index corresponding to values
             maintenance_periods: List of (start, end) datetime tuples
 
         Returns:
-            Values with maintenance periods applied
+            Values with maintenance periods applied (near-zero during shutdowns)
         """
-        # This is a simplified implementation
-        # In practice, you'd match timestamps to periods and set values accordingly
-        return values
+        # Create a copy to avoid modifying the original array
+        result = values.copy()
+
+        # For each maintenance period, find matching timestamps and set values to near-zero
+        for start, end in maintenance_periods:
+            # Find indices where timestamps fall within this maintenance period
+            mask = (timestamps >= start) & (timestamps <= end)
+            # Set values to near-zero (0.1% of original to simulate minimal residual flow)
+            result[mask] = result[mask] * 0.001
+
+        return result
