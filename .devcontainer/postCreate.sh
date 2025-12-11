@@ -5,13 +5,8 @@ echo "========================================="
 echo "Oil Well Time Series API - Dev Container Setup"
 echo "========================================="
 
-# Install uv package manager
-echo "📦 Installing uv package manager..."
-curl -LsSf https://astral.sh/uv/install.sh | sh
-export PATH="$HOME/.local/bin:$PATH"
-
-# Verify uv installation
-echo "✓ uv version: $(uv --version)"
+# uv is now installed via devcontainer feature
+echo "📦 uv version: $(uv --version)"
 
 # Create virtual environment and install Python dependencies
 echo "📦 Creating virtual environment..."

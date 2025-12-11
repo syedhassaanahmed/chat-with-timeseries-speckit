@@ -152,8 +152,15 @@ class SyntheticDataGenerator:
                 # Add random noise
                 values = self._add_random_noise(values)
 
-                # Apply maintenance periods (set to near-zero)
-                values = self._apply_maintenance_periods(values, timestamps, maintenance_periods)
+                # Apply maintenance periods (set to near-zero) - only for production/flow metrics
+                if metric_name in [
+                    "oil_production_rate",
+                    "gas_production_rate",
+                    "gas_injection_rate",
+                ]:
+                    values = self._apply_maintenance_periods(
+                        values, timestamps, maintenance_periods
+                    )
 
                 # Ensure non-negative values for production metrics
                 if metric_name in [
