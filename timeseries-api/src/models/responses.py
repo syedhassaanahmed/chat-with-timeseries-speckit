@@ -1,6 +1,6 @@
 """Response models for API endpoints."""
 
-from datetime import datetime
+from datetime import UTC, datetime
 
 from pydantic import BaseModel, Field
 
@@ -21,7 +21,7 @@ class WellListResponse(BaseModel):
     wells: list[Well]
     total_count: int = Field(..., description="Total number of wells")
     metadata: dict = Field(
-        default_factory=lambda: {"generated_at": datetime.utcnow().isoformat() + "Z"},
+        default_factory=lambda: {"generated_at": datetime.now(UTC).isoformat()},
         description="Additional context",
     )
 
@@ -63,7 +63,7 @@ class MetricListResponse(BaseModel):
     metrics: list[Metric]
     total_count: int
     metadata: dict = Field(
-        default_factory=lambda: {"generated_at": datetime.utcnow().isoformat() + "Z"},
+        default_factory=lambda: {"generated_at": datetime.now(UTC).isoformat()},
         description="Additional context",
     )
 

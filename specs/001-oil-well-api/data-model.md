@@ -32,9 +32,9 @@ Represents an individual oil well with metadata and operational characteristics.
   "operator": "Demo Energy Corp",
   "field_name": "North Field",
   "well_type": "producer",
-  "spud_date": "2022-01-15",
-  "data_start_date": "2023-01-01",
-  "data_end_date": "2024-12-31"
+  "spud_date": "2023-06-15",
+  "data_start_date": "2024-12-09",
+  "data_end_date": "2025-12-09"
 }
 ```
 
@@ -225,9 +225,9 @@ class Well(BaseModel):
         "operator": "Demo Energy Corp",
         "field_name": "North Field",
         "well_type": "producer",
-        "spud_date": "2022-01-15",
-        "data_start_date": "2023-01-01",
-        "data_end_date": "2024-12-31"
+        "spud_date": "2023-06-15",
+        "data_start_date": "2024-12-09",
+        "data_end_date": "2025-12-09"
     }}}
 ```
 
@@ -392,20 +392,22 @@ class AggregatedDataResponse(BaseModel):
 | Entity | Count | Storage per Row | Total Storage |
 |--------|-------|-----------------|---------------|
 | Wells | 5 | ~200 bytes | ~1 KB |
-| Metrics | 8 | ~150 bytes | ~1.2 KB |
-| TimeSeriesData | ~42,048,000 | ~30 bytes | ~1.26 GB |
-| **Total** | | | **~1.26 GB** |
+| Metrics | 5 | ~150 bytes | ~750 bytes |
+| TimeSeriesData | ~7,884,000 | ~30 bytes | ~236.5 MB |
+| **Total** | | | **~237 MB** |
 
 **Calculation**:
-- 5 wells × 8 metrics × 2 years × 365.25 days/year × 1440 minutes/day = 42,048,000 rows
+- 3 wells × 5 metrics × 1 year × 365.25 days/year × 1440 minutes/day = 7,884,000 rows
 - Each row: 8 bytes (id) + 20 bytes (timestamp) + 10 bytes (well_id) + 20 bytes (metric_name) + 8 bytes (value) + 5 bytes (quality_flag) ≈ 71 bytes raw
 - With SQLite overhead and indexes: ~30 bytes per row effective storage
-- Total: 42,048,000 × 30 bytes ≈ 1.26 GB
+- Total: 7,884,000 × 30 bytes ≈ 236.5 MB
 
 **Index Storage**:
-- `idx_well_metric_time`: ~15% of data size ≈ 190 MB
-- `idx_timestamp`: ~10% of data size ≈ 126 MB
-- Total with indexes: ~1.58 GB
+- `idx_well_metric_time`: ~15% of data size ≈ 35.5 MB
+- `idx_timestamp`: ~10% of data size ≈ 23.7 MB
+- Total with indexes: ~296 MB
+
+**Note**: Actual database size may vary. Current implementation shows ~2.5 GB due to SQLite page allocation and fragmentation.
 
 ---
 

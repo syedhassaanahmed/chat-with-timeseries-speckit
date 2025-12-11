@@ -49,7 +49,7 @@
 
 **Goal**: Enable data scientists to retrieve minute-by-minute time-series data for a specific well and metric over a date range
 
-**Independent Test**: Make HTTP GET to `/wells/WELL-001/data/raw?metric_name=oil_production_rate&start_timestamp=2024-01-01T00:00:00Z&end_timestamp=2024-01-31T23:59:59Z` and verify JSON response with timestamped data points
+**Independent Test**: Make HTTP GET to `/wells/WELL-001/data/raw?metric_name=oil_production_rate&start_timestamp=2024-12-09T00:00:00Z&end_timestamp=2025-01-09T23:59:59Z` and verify JSON response with timestamped data points
 
 ### Data Layer for User Story 1
 
@@ -115,7 +115,7 @@
 
 **Goal**: Enable operations engineers to retrieve daily/monthly aggregated summaries (average, max, min, sum) for trend analysis
 
-**Independent Test**: Make HTTP GET to `/wells/WELL-001/data/aggregated?metric_name=wellhead_pressure&start_date=2024-01-01&end_date=2024-01-31&aggregation_type=daily_average` and verify JSON response with one value per day
+**Independent Test**: Make HTTP GET to `/wells/WELL-001/data/aggregated?metric_name=wellhead_pressure&start_date=2024-12-09&end_date=2025-01-09&aggregation_type=daily_average` and verify JSON response with one value per day
 
 ### Data Layer for User Story 2
 

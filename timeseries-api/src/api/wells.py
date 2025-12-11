@@ -1,7 +1,7 @@
 """Wells endpoints for Oil Well Time Series API."""
 
 import sqlite3
-from datetime import datetime
+from datetime import UTC, datetime
 
 from fastapi import APIRouter, Depends, HTTPException
 
@@ -34,7 +34,7 @@ def list_wells(
         return WellListResponse(
             wells=wells,
             total_count=len(wells),
-            metadata={"generated_at": datetime.utcnow().isoformat() + "Z"},
+            metadata={"generated_at": datetime.now(UTC).isoformat()},
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}") from e
