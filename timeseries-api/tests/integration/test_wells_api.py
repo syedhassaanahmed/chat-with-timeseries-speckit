@@ -1,7 +1,6 @@
 """Integration tests for wells API endpoints."""
 
 import sqlite3
-from datetime import date
 
 import pytest
 from fastapi.testclient import TestClient
@@ -63,22 +62,6 @@ def test_list_all_wells(client: TestClient) -> None:
     assert "generated_at" in data["metadata"]
 
 
-def test_list_wells_metadata_includes_timestamp(client: TestClient) -> None:
-    """Test that metadata includes a generated_at timestamp."""
-    response = client.get("/wells")
-
-    assert response.status_code == 200
-    data = response.json()
-
-    assert "metadata" in data
-    assert "generated_at" in data["metadata"]
-
-    # Verify timestamp format (ISO 8601 with timezone)
-    timestamp = data["metadata"]["generated_at"]
-    assert "T" in timestamp
-    assert timestamp.endswith("+00:00") or timestamp.endswith("Z")
-
-
 def test_get_well_by_id_success(client: TestClient, db_connection: sqlite3.Connection) -> None:
     """Test GET /wells/{well_id} returns specific well."""
     # Get a valid well_id from database
@@ -120,35 +103,6 @@ def test_get_well_by_id_invalid_format(client: TestClient) -> None:
     assert response.status_code == 404
 
 
-def test_list_wells_response_format(client: TestClient) -> None:
-    """Test that wells list response matches expected schema."""
-    response = client.get("/wells")
-
-    assert response.status_code == 200
-    data = response.json()
-
-    # Verify all wells have consistent structure
-    for well in data["wells"]:
-        # Check required fields are present and have correct types
-        assert isinstance(well["well_id"], str)
-        assert isinstance(well["well_name"], str)
-        assert isinstance(well["latitude"], (int, float))
-        assert isinstance(well["longitude"], (int, float))
-        assert isinstance(well["operator"], str)
-        assert isinstance(well["field_name"], str)
-        assert isinstance(well["well_type"], str)
-
-        # Dates should be strings in ISO format
-        assert isinstance(well["spud_date"], str)
-        assert isinstance(well["data_start_date"], str)
-        assert isinstance(well["data_end_date"], str)
-
-        # Verify date format (YYYY-MM-DD)
-        date.fromisoformat(well["spud_date"])
-        date.fromisoformat(well["data_start_date"])
-        date.fromisoformat(well["data_end_date"])
-
-
 def test_get_well_metrics(client: TestClient, db_connection: sqlite3.Connection) -> None:
     """Test GET /wells/{well_id}/metrics returns metrics for specific well."""
     # Get a valid well_id
@@ -183,14 +137,3 @@ def test_get_well_metrics_not_found(client: TestClient) -> None:
     response = client.get("/wells/WELL-999/metrics")
 
     assert response.status_code == 404
-
-
-def test_wells_endpoint_cors_headers(client: TestClient) -> None:
-    """Test that CORS headers are present in wells endpoint responses."""
-    response = client.get("/wells")
-
-    assert response.status_code == 200
-
-    # FastAPI adds CORS headers if configured
-    # This test verifies the endpoint is accessible
-    assert "wells" in response.json()

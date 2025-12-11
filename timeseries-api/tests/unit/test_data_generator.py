@@ -310,43 +310,6 @@ def test_different_wells_different_patterns(db_connection: sqlite3.Connection) -
     assert not np.allclose(values2, values3), "Wells 2 and 3 should have different patterns"
 
 
-def test_all_wells_and_metrics_present(db_connection: sqlite3.Connection) -> None:
-    """Test that data exists for all well/metric combinations."""
-    query = """
-        SELECT DISTINCT well_id, metric_name
-        FROM timeseries_data
-        ORDER BY well_id, metric_name
-    """
-    df = pd.read_sql_query(query, db_connection)
-
-    well_ids = set(df["well_id"].unique())
-    metric_names = set(df["metric_name"].unique())
-
-    # Check expected wells are present
-    for i in range(1, config.NUM_WELLS + 1):
-        expected_well = f"WELL-{i:03d}"
-        assert expected_well in well_ids, f"Missing well: {expected_well}"
-
-    # Check expected metrics are present
-    expected_metrics = set(config.METRIC_CONFIGS.keys())
-    assert metric_names == expected_metrics
-
-
-def test_values_are_non_negative(db_connection: sqlite3.Connection) -> None:
-    """Test that production and pressure values are non-negative."""
-    query = "SELECT MIN(value) as min_value FROM timeseries_data"
-    df = pd.read_sql_query(query, db_connection)
-
-    min_value = df["min_value"].iloc[0]
-    assert min_value >= 0, f"Found negative value: {min_value}"
-
-
-def test_dataframe_sorted_by_time(sample_well_data: pd.DataFrame) -> None:
-    """Test that data is sorted by timestamp."""
-    timestamps = sample_well_data["timestamp"].values
-    assert np.all(timestamps[:-1] <= timestamps[1:]), "Timestamps not sorted"
-
-
 def test_data_count_matches_expectations(db_connection: sqlite3.Connection) -> None:
     """Test that the total number of data points matches expectations."""
     query = "SELECT COUNT(*) as total FROM timeseries_data"

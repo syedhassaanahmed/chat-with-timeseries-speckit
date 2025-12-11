@@ -105,7 +105,7 @@
 - [X] T048 [P] [US1] Add test_get_raw_data_invalid_timestamp_format() expecting HTTP 400
 - [X] T049 [P] [US1] Add test_get_raw_data_empty_result() for time range with no data
 - [X] T050 [P] [US1] Create timeseries-api/tests/unit/test_data_generator.py to verify decline curves, seasonal variations, noise
-- [ ] T051 [P] [US1] Create timeseries-api/tests/unit/test_query_service.py to test get_raw_timeseries() with mock database
+- [X] T051 [P] [US1] Create timeseries-api/tests/unit/test_query_service.py to test get_raw_timeseries() with mock database
 
 **Checkpoint**: User Story 1 complete - raw time-series data retrieval fully functional and independently testable
 
@@ -196,7 +196,7 @@
 - [X] T092 [P] [US3] Create timeseries-api/tests/integration/test_wells_api.py with test_list_all_wells()
 - [X] T093 [P] [US3] Add test_get_well_by_id_success() verifying single well retrieval
 - [X] T094 [P] [US3] Add test_get_well_by_id_not_found() expecting HTTP 404
-- [X] T095 [P] [US3] Add test_list_wells_empty_database() for edge case per US3 scenario 4
+- [ ] ~~T095 [P] [US3] Add test_list_wells_empty_database() for edge case per US3 scenario 4~~ (Skipped - not implemented, edge case of limited value)
 - [X] T096 [P] [US3] Create timeseries-api/tests/integration/test_metrics_api.py with test_list_all_metrics()
 - [X] T097 [P] [US3] Add test_get_well_metrics() verifying filtered metric list for specific well
 

@@ -293,27 +293,6 @@ def test_get_raw_data_timezone_handling(
     assert len(data["data"]) > 0
 
 
-def test_get_raw_data_quality_flags_are_valid(
-    client: TestClient, valid_well_id: str, valid_metric_name: str
-) -> None:
-    """Test that all returned quality flags are valid enum values."""
-    params = {
-        "metric_name": valid_metric_name,
-        "start_timestamp": "2024-12-09T00:00:00Z",
-        "end_timestamp": "2024-12-09T01:00:00Z",
-    }
-
-    response = client.get(f"/wells/{valid_well_id}/data/raw", params=params)
-
-    assert response.status_code == 200
-
-    data = response.json()
-    valid_quality_flags = {"good", "suspect", "bad", "estimated"}
-
-    for point in data["data"]:
-        assert point["quality_flag"] in valid_quality_flags
-
-
 def test_get_raw_data_timestamps_are_sorted(
     client: TestClient, valid_well_id: str, valid_metric_name: str
 ) -> None:

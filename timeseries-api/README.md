@@ -81,15 +81,6 @@ make lint
 make fix
 ```
 
-## Test Coverage
-
-Current test coverage: **66.4%**
-
-- ✅ 78 tests passing
-- ✅ 10 contract tests (OpenAPI compliance)
-- ✅ 41 integration tests (API endpoints)
-- ✅ 27 unit tests (services and data generation)
-
 ## Tech Stack
 
 - **Python 3.14** - Latest Python version
