@@ -5,12 +5,10 @@ info:
   description: |
     A public REST API that serves synthetic oil well time-series data for demonstration and testing purposes.
     
-    This API provides access to 2 years of realistic synthetic operational data for 5 sample oil wells, including:
-    - Oil, gas, and water production rates
+    This API provides access to 1 year of realistic synthetic operational data for 3 sample oil wells, including:
+    - Oil and gas production rates
     - Wellhead and tubing pressures
     - Gas injection rates
-    - Choke settings
-    - Well status indicators
     
     **Key Features**:
     - Query raw timestamped data at minute-level granularity
@@ -58,10 +56,10 @@ paths:
                     operator: "Demo Energy Corp"
                     field_name: "North Field"
                     well_type: "producer"
-                    spud_date: "2022-01-15"
-                    data_start_date: "2023-01-01"
-                    data_end_date: "2024-12-31"
-                total_count: 5
+                    spud_date: "2023-12-09"
+                    data_start_date: "2024-12-09"
+                    data_end_date: "2025-12-09"
+                total_count: 3
                 metadata:
                   generated_at: "2024-12-09T10:30:00Z"
         '500':
@@ -111,7 +109,7 @@ paths:
                     data_type: "numeric"
                     typical_min: 0
                     typical_max: 500
-                total_count: 8
+                total_count: 5
                 metadata:
                   generated_at: "2024-12-09T10:30:00Z"
         '500':
@@ -358,17 +356,17 @@ components:
           type: string
           format: date
           description: Date when drilling started
-          example: "2022-01-15"
+          example: "2023-12-09"
         data_start_date:
           type: string
           format: date
           description: First date with available data
-          example: "2023-01-01"
+          example: "2024-12-09"
         data_end_date:
           type: string
           format: date
           description: Last date with available data
-          example: "2024-12-31"
+          example: "2025-12-09"
 
     Metric:
       type: object
@@ -534,7 +532,7 @@ components:
         total_count:
           type: integer
           description: Total number of wells
-          example: 5
+          example: 3
         metadata:
           type: object
           properties:
@@ -557,7 +555,7 @@ components:
         total_count:
           type: integer
           description: Total number of metrics
-          example: 8
+          example: 5
         metadata:
           type: object
           properties:

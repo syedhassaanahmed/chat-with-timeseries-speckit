@@ -4,12 +4,10 @@ A REST API that serves synthetic oil well time-series data for demonstration and
 
 ## 🎯 Overview
 
-This API provides access to 2 years of realistic synthetic operational data for 5 sample oil wells, including:
-- Oil, gas, and water production rates
+This API provides access to 1 year of realistic synthetic operational data for 3 sample oil wells, including:
+- Oil and gas production rates
 - Wellhead and tubing pressures  
 - Gas injection rates
-- Choke settings
-- Well status indicators
 
 **Key Features:**
 - Query raw timestamped data at minute-level granularity

@@ -69,12 +69,9 @@ Represents a measurable oilfield KPI or operational parameter.
 **Supported Metrics** (as per FR-008):
 1. `oil_production_rate` (bbl/day)
 2. `gas_production_rate` (mcf/day)
-3. `water_production_rate` (bbl/day)
-4. `wellhead_pressure` (psi)
-5. `tubing_pressure` (psi)
-6. `gas_injection_rate` (mcf/day)
-7. `choke_setting` (percent, 0-100)
-8. `well_status` (categorical: "online", "offline", "maintenance")
+3. `wellhead_pressure` (psi)
+4. `tubing_pressure` (psi)
+5. `gas_injection_rate` (mcf/day)
 
 ---
 

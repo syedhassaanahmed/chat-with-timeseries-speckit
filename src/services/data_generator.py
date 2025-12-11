@@ -159,14 +159,9 @@ class SyntheticDataGenerator:
                 if metric_name in [
                     "oil_production_rate",
                     "gas_production_rate",
-                    "water_production_rate",
                     "gas_injection_rate",
                 ]:
                     values = np.maximum(values, 0)
-
-                # Ensure choke setting is 0-100%
-                if metric_name == "choke_setting":
-                    values = np.clip(values, 0, 100)
 
                 # Generate quality flags (mostly "good")
                 quality_flags = np.random.choice(
@@ -226,10 +221,6 @@ class SyntheticDataGenerator:
             # Gas correlates with oil (GOR ratio ~3-5 mcf/bbl)
             gor = random.uniform(3, 5)
             values = initial_rate * gor * np.exp(-decline_rate * days)
-        elif metric_name == "water_production_rate":
-            # Water cut increases over time (opposite of oil decline)
-            water_cut = 0.1 + 0.4 * (1 - np.exp(-decline_rate * days * 2))
-            values = initial_rate * water_cut
         elif metric_name == "wellhead_pressure":
             # Pressure decreases with depletion
             initial_pressure = random.uniform(1500, 2500)
@@ -244,12 +235,6 @@ class SyntheticDataGenerator:
                 values = np.full(len(days), random.uniform(500, 1200))
             else:
                 values = np.zeros(len(days))
-        elif metric_name == "choke_setting":
-            # Choke setting varies but doesn't decline
-            values = np.full(len(days), random.uniform(40, 80))
-        elif metric_name == "well_status":
-            # Status (0=offline, 1=online)
-            values = np.ones(len(days))
         else:
             values = np.full(len(days), 100.0)
 
