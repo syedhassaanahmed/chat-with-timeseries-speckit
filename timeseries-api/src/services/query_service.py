@@ -204,6 +204,50 @@ class QueryService:
 
         return metrics
 
+    def get_metrics_for_well(self, db: sqlite3.Connection, well_id: str) -> list[Metric]:
+        """Get all metrics that have data for a specific well.
+
+        Returns only metrics that have at least one data point for the specified well.
+
+        Args:
+            db: Database connection
+            well_id: Well identifier
+
+        Returns:
+            List of Metric objects that have data for this well
+        """
+        # First validate well exists
+        self._validate_well_exists(db, well_id)
+
+        cursor = db.cursor()
+        cursor.execute(
+            """
+            SELECT DISTINCT m.metric_name, m.display_name, m.description,
+                   m.unit_of_measurement, m.data_type, m.typical_min, m.typical_max
+            FROM metrics m
+            INNER JOIN timeseries_data t ON m.metric_name = t.metric_name
+            WHERE t.well_id = ?
+            ORDER BY m.metric_name
+            """,
+            (well_id,),
+        )
+
+        metrics = []
+        for row in cursor.fetchall():
+            metrics.append(
+                Metric(
+                    metric_name=row[0],
+                    display_name=row[1],
+                    description=row[2],
+                    unit_of_measurement=row[3],
+                    data_type=row[4],
+                    typical_min=row[5],
+                    typical_max=row[6],
+                )
+            )
+
+        return metrics
+
     def _validate_well_exists(self, db: sqlite3.Connection, well_id: str) -> None:
         """Validate that a well exists in the database.
 
