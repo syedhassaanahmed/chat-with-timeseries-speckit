@@ -1,0 +1,73 @@
+# Ruff Configuration for Oil Well Time Series API
+
+# Target Python 3.14
+target-version = "py314"
+
+# Line length
+line-length = 100
+
+# Excluded paths
+exclude = [
+    ".git",
+    ".venv",
+    "venv",
+    "__pycache__",
+    "build",
+    "dist",
+    "*.egg-info",
+    ".pytest_cache",
+    ".coverage",
+    "htmlcov",
+]
+
+[lint]
+# Enable rule categories
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # isort
+    "N",    # pep8-naming
+    "UP",   # pyupgrade
+    "ANN",  # flake8-annotations
+    "B",    # flake8-bugbear
+    "C4",   # flake8-comprehensions
+    "SIM",  # flake8-simplify
+]
+
+# Ignore specific rules
+ignore = [
+    "ANN401",  # Dynamically typed expressions (Any) are disallowed
+    "B008",    # FastAPI Depends() and Query() in function defaults (false positive)
+]
+
+# Allow fix for all enabled rules (when `--fix` is provided)
+fixable = ["ALL"]
+unfixable = []
+
+# Allow unused variables when underscore-prefixed
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[lint.per-file-ignores]
+# Tests can use magic values, assertions, and relative imports
+"tests/**/*.py" = ["ANN", "S101"]
+
+[lint.isort]
+known-first-party = ["src"]
+combine-as-imports = true
+
+[lint.pydocstyle]
+convention = "google"
+
+[format]
+# Use double quotes for strings
+quote-style = "double"
+
+# Indent with spaces
+indent-style = "space"
+
+# Respect magic trailing commas
+skip-magic-trailing-comma = false
+
+# Use Unix line endings
+line-ending = "lf"

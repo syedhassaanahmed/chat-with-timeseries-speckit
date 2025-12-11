@@ -1,0 +1,718 @@
+openapi: 3.0.3
+info:
+  title: Oil Well Time Series API
+  version: 1.0.0
+  description: |
+    A public REST API that serves synthetic oil well time-series data for demonstration and testing purposes.
+    
+    This API provides access to 1 year of realistic synthetic operational data for 3 sample oil wells, including:
+    - Oil and gas production rates
+    - Wellhead and tubing pressures
+    - Gas injection rates
+    
+    **Key Features**:
+    - Query raw timestamped data at minute-level granularity
+    - Retrieve aggregated summaries (daily/monthly averages, sums, min, max)
+    - Discover available wells and metrics
+    - No authentication required (publicly accessible)
+    
+    **Data Characteristics**:
+    - All data is synthetic (no real oilfield information)
+    - Realistic production profiles with decline curves
+    - Seasonal variations and maintenance periods
+    - Quality flags for data completeness
+  contact:
+    name: API Support
+    url: https://github.com/syedhassaanahmed/chat-with-timeseries-speckit
+  license:
+    name: MIT
+servers:
+  - url: http://localhost:8000
+    description: Local development server
+  - url: https://api.example.com
+    description: Production server (placeholder)
+
+paths:
+  /wells:
+    get:
+      summary: List all available wells
+      description: Returns metadata for all sample wells in the system
+      operationId: listWells
+      tags:
+        - Discovery
+      responses:
+        '200':
+          description: Successfully retrieved well list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WellListResponse'
+              example:
+                wells:
+                  - well_id: "WELL-001"
+                    well_name: "North Field Alpha 1"
+                    latitude: 29.5
+                    longitude: -95.2
+                    operator: "Demo Energy Corp"
+                    field_name: "North Field"
+                    well_type: "producer"
+                    spud_date: "2023-12-09"
+                    data_start_date: "2024-12-09"
+                    data_end_date: "2025-12-09"
+                total_count: 3
+                metadata:
+                  generated_at: "2024-12-09T10:30:00Z"
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /wells/{well_id}:
+    get:
+      summary: Get details for a specific well
+      description: Returns metadata for a single well
+      operationId: getWell
+      tags:
+        - Discovery
+      parameters:
+        - $ref: '#/components/parameters/WellIdPath'
+      responses:
+        '200':
+          description: Successfully retrieved well details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Well'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /metrics:
+    get:
+      summary: List all available metrics
+      description: Returns metadata for all metric types (oil production, pressure, etc.)
+      operationId: listMetrics
+      tags:
+        - Discovery
+      responses:
+        '200':
+          description: Successfully retrieved metrics list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricListResponse'
+              example:
+                metrics:
+                  - metric_name: "oil_production_rate"
+                    display_name: "Oil Production Rate"
+                    description: "Daily oil production volume from the well"
+                    unit_of_measurement: "bbl/day"
+                    data_type: "numeric"
+                    typical_min: 0
+                    typical_max: 500
+                total_count: 5
+                metadata:
+                  generated_at: "2024-12-09T10:30:00Z"
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /wells/{well_id}/metrics:
+    get:
+      summary: List metrics available for a specific well
+      description: Returns only metrics that have data for the specified well
+      operationId: getWellMetrics
+      tags:
+        - Discovery
+      parameters:
+        - $ref: '#/components/parameters/WellIdPath'
+      responses:
+        '200':
+          description: Successfully retrieved well metrics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricListResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /wells/{well_id}/data/raw:
+    get:
+      summary: Query raw time series data
+      description: |
+        Retrieve timestamped data points for a specific well and metric over a time range.
+        Returns minute-level granularity data with timestamps in ISO 8601 UTC format.
+      operationId: getRawData
+      tags:
+        - Time Series Data
+      parameters:
+        - $ref: '#/components/parameters/WellIdPath'
+        - name: metric_name
+          in: query
+          required: true
+          description: Metric identifier (e.g., "oil_production_rate")
+          schema:
+            type: string
+            example: "oil_production_rate"
+        - name: start_timestamp
+          in: query
+          required: true
+          description: Start of time range (ISO 8601 UTC)
+          schema:
+            type: string
+            format: date-time
+            example: "2024-01-01T00:00:00Z"
+        - name: end_timestamp
+          in: query
+          required: true
+          description: End of time range (ISO 8601 UTC)
+          schema:
+            type: string
+            format: date-time
+            example: "2024-01-31T23:59:59Z"
+      responses:
+        '200':
+          description: Successfully retrieved raw data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RawDataResponse'
+              example:
+                data:
+                  - timestamp: "2024-01-01T00:00:00Z"
+                    well_id: "WELL-001"
+                    metric_name: "oil_production_rate"
+                    value: 245.7
+                    unit: "bbl/day"
+                    quality_flag: "good"
+                  - timestamp: "2024-01-01T00:01:00Z"
+                    well_id: "WELL-001"
+                    metric_name: "oil_production_rate"
+                    value: 246.1
+                    unit: "bbl/day"
+                    quality_flag: "good"
+                metadata:
+                  well_id: "WELL-001"
+                  metric_name: "oil_production_rate"
+                  start_timestamp: "2024-01-01T00:00:00Z"
+                  end_timestamp: "2024-01-31T23:59:59Z"
+                  total_points: 44640
+                  data_completeness: 99.8
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /wells/{well_id}/data/aggregated:
+    get:
+      summary: Query aggregated time series data
+      description: |
+        Retrieve computed summaries (averages, sums, min, max) for a specific well and metric.
+        Aggregates data by day or month depending on the aggregation type.
+        
+        **Performance**: Queries over 2 years return in <1 second (SC-002).
+      operationId: getAggregatedData
+      tags:
+        - Time Series Data
+      parameters:
+        - $ref: '#/components/parameters/WellIdPath'
+        - name: metric_name
+          in: query
+          required: true
+          description: Metric identifier
+          schema:
+            type: string
+            example: "oil_production_rate"
+        - name: start_date
+          in: query
+          required: true
+          description: Start date (ISO 8601 date)
+          schema:
+            type: string
+            format: date
+            example: "2024-01-01"
+        - name: end_date
+          in: query
+          required: true
+          description: End date (ISO 8601 date)
+          schema:
+            type: string
+            format: date
+            example: "2024-12-31"
+        - name: aggregation_type
+          in: query
+          required: true
+          description: Type of aggregation to perform
+          schema:
+            type: string
+            enum:
+              - daily_average
+              - daily_max
+              - daily_min
+              - daily_sum
+              - monthly_average
+            example: "daily_average"
+      responses:
+        '200':
+          description: Successfully retrieved aggregated data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AggregatedDataResponse'
+              example:
+                data:
+                  - date: "2024-01-01"
+                    time_period: "2024-01-01"
+                    well_id: "WELL-001"
+                    metric_name: "oil_production_rate"
+                    aggregated_value: 248.3
+                    aggregation_type: "daily_average"
+                    unit: "bbl/day"
+                    data_point_count: 1440
+                    min_value: 230.1
+                    max_value: 265.8
+                    data_completeness: 100.0
+                metadata:
+                  well_id: "WELL-001"
+                  metric_name: "oil_production_rate"
+                  aggregation_type: "daily_average"
+                  start_date: "2024-01-01"
+                  end_date: "2024-01-31"
+                  total_periods: 31
+                  average_data_completeness: 99.5
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  parameters:
+    WellIdPath:
+      name: well_id
+      in: path
+      required: true
+      description: Unique well identifier
+      schema:
+        type: string
+        pattern: '^WELL-\d{3}$'
+        example: "WELL-001"
+
+  schemas:
+    Well:
+      type: object
+      required:
+        - well_id
+        - well_name
+        - latitude
+        - longitude
+        - operator
+        - field_name
+        - well_type
+        - spud_date
+        - data_start_date
+        - data_end_date
+      properties:
+        well_id:
+          type: string
+          pattern: '^WELL-\d{3}$'
+          description: Unique well identifier
+          example: "WELL-001"
+        well_name:
+          type: string
+          description: Human-readable well name
+          example: "North Field Alpha 1"
+        latitude:
+          type: number
+          format: float
+          minimum: -90
+          maximum: 90
+          description: Geographic latitude
+          example: 29.5
+        longitude:
+          type: number
+          format: float
+          minimum: -180
+          maximum: 180
+          description: Geographic longitude
+          example: -95.2
+        operator:
+          type: string
+          description: Operating company name
+          example: "Demo Energy Corp"
+        field_name:
+          type: string
+          description: Field where well is located
+          example: "North Field"
+        well_type:
+          type: string
+          enum: [producer, injector, observation]
+          description: Type of well
+          example: "producer"
+        spud_date:
+          type: string
+          format: date
+          description: Date when drilling started
+          example: "2023-12-09"
+        data_start_date:
+          type: string
+          format: date
+          description: First date with available data
+          example: "2024-12-09"
+        data_end_date:
+          type: string
+          format: date
+          description: Last date with available data
+          example: "2025-12-09"
+
+    Metric:
+      type: object
+      required:
+        - metric_name
+        - display_name
+        - description
+        - unit_of_measurement
+        - data_type
+      properties:
+        metric_name:
+          type: string
+          description: Unique metric identifier
+          example: "oil_production_rate"
+        display_name:
+          type: string
+          description: User-friendly label
+          example: "Oil Production Rate"
+        description:
+          type: string
+          description: Explanation of the metric
+          example: "Daily oil production volume from the well"
+        unit_of_measurement:
+          type: string
+          description: Unit abbreviation
+          example: "bbl/day"
+        data_type:
+          type: string
+          enum: [numeric, boolean, categorical]
+          description: Type of data
+          example: "numeric"
+        typical_min:
+          type: number
+          format: float
+          nullable: true
+          description: Typical minimum value
+          example: 0
+        typical_max:
+          type: number
+          format: float
+          nullable: true
+          description: Typical maximum value
+          example: 500
+
+    TimeSeriesDataPoint:
+      type: object
+      required:
+        - timestamp
+        - well_id
+        - metric_name
+        - value
+        - unit
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: Measurement timestamp (ISO 8601 UTC)
+          example: "2024-01-01T00:00:00Z"
+        well_id:
+          type: string
+          description: Reference to well
+          example: "WELL-001"
+        metric_name:
+          type: string
+          description: Reference to metric
+          example: "oil_production_rate"
+        value:
+          type: number
+          format: float
+          description: Measured value
+          example: 245.7
+        unit:
+          type: string
+          description: Unit of measurement
+          example: "bbl/day"
+        quality_flag:
+          type: string
+          enum: [good, suspect, bad]
+          default: good
+          description: Data quality indicator
+          example: "good"
+
+    AggregatedDataPoint:
+      type: object
+      required:
+        - date
+        - time_period
+        - well_id
+        - metric_name
+        - aggregated_value
+        - aggregation_type
+        - unit
+        - data_point_count
+        - min_value
+        - max_value
+        - data_completeness
+      properties:
+        date:
+          type: string
+          format: date
+          description: Date or start of time period
+          example: "2024-01-01"
+        time_period:
+          type: string
+          description: Period label
+          example: "2024-01-01"
+        well_id:
+          type: string
+          description: Reference to well
+          example: "WELL-001"
+        metric_name:
+          type: string
+          description: Reference to metric
+          example: "oil_production_rate"
+        aggregated_value:
+          type: number
+          format: float
+          description: Computed aggregate value
+          example: 248.3
+        aggregation_type:
+          type: string
+          enum: [daily_average, daily_max, daily_min, daily_sum, monthly_average]
+          description: Aggregation method used
+          example: "daily_average"
+        unit:
+          type: string
+          description: Unit of measurement
+          example: "bbl/day"
+        data_point_count:
+          type: integer
+          minimum: 1
+          description: Number of raw points in calculation
+          example: 1440
+        min_value:
+          type: number
+          format: float
+          description: Minimum value in period
+          example: 230.1
+        max_value:
+          type: number
+          format: float
+          description: Maximum value in period
+          example: 265.8
+        data_completeness:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 100
+          description: Percentage of expected data points present
+          example: 100.0
+
+    WellListResponse:
+      type: object
+      required:
+        - wells
+        - total_count
+        - metadata
+      properties:
+        wells:
+          type: array
+          items:
+            $ref: '#/components/schemas/Well'
+        total_count:
+          type: integer
+          description: Total number of wells
+          example: 3
+        metadata:
+          type: object
+          properties:
+            generated_at:
+              type: string
+              format: date-time
+              example: "2024-12-09T10:30:00Z"
+
+    MetricListResponse:
+      type: object
+      required:
+        - metrics
+        - total_count
+        - metadata
+      properties:
+        metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/Metric'
+        total_count:
+          type: integer
+          description: Total number of metrics
+          example: 5
+        metadata:
+          type: object
+          properties:
+            generated_at:
+              type: string
+              format: date-time
+              example: "2024-12-09T10:30:00Z"
+
+    RawDataResponse:
+      type: object
+      required:
+        - data
+        - metadata
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeSeriesDataPoint'
+        metadata:
+          type: object
+          required:
+            - well_id
+            - metric_name
+            - start_timestamp
+            - end_timestamp
+            - total_points
+            - data_completeness
+          properties:
+            well_id:
+              type: string
+              example: "WELL-001"
+            metric_name:
+              type: string
+              example: "oil_production_rate"
+            start_timestamp:
+              type: string
+              format: date-time
+              example: "2024-01-01T00:00:00Z"
+            end_timestamp:
+              type: string
+              format: date-time
+              example: "2024-01-31T23:59:59Z"
+            total_points:
+              type: integer
+              example: 44640
+            data_completeness:
+              type: number
+              format: float
+              minimum: 0
+              maximum: 100
+              example: 99.8
+
+    AggregatedDataResponse:
+      type: object
+      required:
+        - data
+        - metadata
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AggregatedDataPoint'
+        metadata:
+          type: object
+          required:
+            - well_id
+            - metric_name
+            - aggregation_type
+            - start_date
+            - end_date
+            - total_periods
+            - average_data_completeness
+          properties:
+            well_id:
+              type: string
+              example: "WELL-001"
+            metric_name:
+              type: string
+              example: "oil_production_rate"
+            aggregation_type:
+              type: string
+              enum: [daily_average, daily_max, daily_min, daily_sum, monthly_average]
+              example: "daily_average"
+            start_date:
+              type: string
+              format: date
+              example: "2024-01-01"
+            end_date:
+              type: string
+              format: date
+              example: "2024-01-31"
+            total_periods:
+              type: integer
+              example: 31
+            average_data_completeness:
+              type: number
+              format: float
+              minimum: 0
+              maximum: 100
+              example: 99.5
+
+    Error:
+      type: object
+      required:
+        - error
+        - message
+      properties:
+        error:
+          type: string
+          description: Error type
+          example: "NotFound"
+        message:
+          type: string
+          description: Human-readable error message
+          example: "Well with ID 'WELL-999' not found"
+        details:
+          type: object
+          nullable: true
+          description: Additional error context
+          additionalProperties: true
+
+  responses:
+    BadRequest:
+      description: Invalid request parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "ValidationError"
+            message: "Invalid date format for start_date parameter"
+            details:
+              parameter: "start_date"
+              expected_format: "YYYY-MM-DD"
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "NotFound"
+            message: "Well with ID 'WELL-999' not found"
+
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "InternalServerError"
+            message: "An unexpected error occurred while processing your request"
+
+tags:
+  - name: Discovery
+    description: Endpoints for discovering available wells and metrics
+  - name: Time Series Data
+    description: Endpoints for querying raw and aggregated time series data
