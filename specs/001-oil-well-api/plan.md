@@ -19,6 +19,7 @@ Public REST API serving synthetic oil well time-series data (1 year, 3 wells, 5 
 **Project Type**: Single backend API (no frontend)  
 **Package Management**: uv (fast Python package installer and resolver)  
 **Linting/Formatting**: ruff (fast Python linter and formatter)  
+**Project Structure**: Monorepo with timeseries-api/ subdirectory  
 **Constraints**: Read-only API, no authentication, minute-level data granularity  
 **Scale/Scope**: 3 sample wells, 5 metrics, ~1 year of data (~7.9M data points, ~2.5 GB)
 

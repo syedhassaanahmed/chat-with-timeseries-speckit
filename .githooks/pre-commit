@@ -7,10 +7,10 @@ echo "🔍 Running pre-commit checks..."
 echo ""
 
 # Activate virtual environment
-if [ -f ".venv/bin/activate" ]; then
-    source .venv/bin/activate
+if [ -f "timeseries-api/.venv/bin/activate" ]; then
+    source timeseries-api/.venv/bin/activate
 else
-    echo "❌ Virtual environment not found. Please run: uv venv .venv"
+    echo "❌ Virtual environment not found. Please run: uv venv timeseries-api/.venv"
     exit 1
 fi
 

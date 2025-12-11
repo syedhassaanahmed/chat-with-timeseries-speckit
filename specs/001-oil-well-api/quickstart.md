@@ -48,13 +48,14 @@ python --version  # Should show Python 3.14.x
 uv --version
 
 # Verify database was created
-ls -lh data/timeseries.db  # Should exist with ~1.26 GB
+ls -lh timeseries-api/data/timeseries.db  # Should exist with ~2.5 GB
 ```
 
 ### 4. Start API Server
 
 ```bash
-uvicorn src.api.main:app --reload --port 8000
+source timeseries-api/.venv/bin/activate
+uvicorn timeseries-api.src.api.main:app --reload --port 8000
 ```
 
 **Expected output**:
@@ -247,10 +248,12 @@ pytest tests/unit/ --cov=src --cov-report=html
 
 ```bash
 # Start API server first (in separate terminal)
-uvicorn src.api.main:app --reload
+source timeseries-api/.venv/bin/activate
+uvicorn timeseries-api.src.api.main:app --reload
 
 # Run integration tests (in another terminal)
-pytest tests/integration/ -v
+source timeseries-api/.venv/bin/activate
+pytest timeseries-api/tests/integration/ -v
 ```
 
 ### Contract Tests
@@ -332,6 +335,8 @@ python src/db/seed.py
 
 **Solution**: Either stop the conflicting process or use a different port:
 ```bash
+cd timeseries-api
+source .venv/bin/activate
 uvicorn src.api.main:app --reload --port 8001
 ```
 

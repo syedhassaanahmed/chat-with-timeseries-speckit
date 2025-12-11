@@ -8,14 +8,14 @@ help:
 
 test:
 	@echo "Running tests..."
-	pytest
+	pytest -c timeseries-api/pyproject.toml timeseries-api/tests/
 
 lint:
 	@echo "Running ruff linter..."
-	ruff check src/ tests/
+	ruff check --config timeseries-api/ruff.toml timeseries-api/src/ timeseries-api/tests/
 
 fix:
 	@echo "Fixing linting issues..."
-	ruff check src/ tests/ --fix
+	ruff check --config timeseries-api/ruff.toml timeseries-api/src/ timeseries-api/tests/ --fix
 	@echo "Formatting code..."
-	ruff format src/ tests/
+	ruff format --config timeseries-api/ruff.toml timeseries-api/src/ timeseries-api/tests/

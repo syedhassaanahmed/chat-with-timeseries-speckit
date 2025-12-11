@@ -15,11 +15,11 @@ echo "✓ uv version: $(uv --version)"
 
 # Create virtual environment and install Python dependencies
 echo "📦 Creating virtual environment..."
-uv venv .venv --allow-existing
-source .venv/bin/activate
+uv venv timeseries-api/.venv --allow-existing
+source timeseries-api/.venv/bin/activate
 
 echo "📦 Installing Python dependencies..."
-uv pip install -e ".[dev]"
+uv pip install -e "timeseries-api/[dev]"
 
 echo "✓ Python dependencies installed"
 
@@ -31,11 +31,11 @@ echo "✓ Git hooks installed"
 
 # Initialize database
 echo "🗄️  Initializing database with synthetic data..."
-if [ -f "src/db/seed.py" ]; then
-    python src/db/seed.py
-    echo "✓ Database initialized: data/timeseries.db"
+if [ -f "timeseries-api/src/db/seed.py" ]; then
+    python timeseries-api/src/db/seed.py
+    echo "✓ Database initialized: timeseries-api/data/timeseries.db"
 else
-    echo "⚠️  Seed script not found yet. Run 'python src/db/seed.py' manually after implementation."
+    echo "⚠️  Seed script not found yet. Run 'python timeseries-api/src/db/seed.py' manually after implementation."
 fi
 
 # Verify installation
@@ -45,9 +45,10 @@ echo "✅ Dev Container setup complete!"
 echo "========================================="
 echo ""
 echo "Quick Start:"
-echo "  • Start API server: uvicorn src.api.main:app --reload --port 8000"
+echo "  • Activate environment: source timeseries-api/.venv/bin/activate"
+echo "  • Start API server: uvicorn timeseries-api.src.api.main:app --reload --port 8000"
 echo "  • View API docs: http://localhost:8000/docs"
-echo "  • Run tests: pytest"
-echo "  • Lint code: ruff check src/ tests/"
-echo "  • Format code: ruff format src/ tests/"
+echo "  • Run tests: make test"
+echo "  • Lint code: make lint"
+echo "  • Fix code: make fix"
 echo ""

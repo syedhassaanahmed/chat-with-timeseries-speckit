@@ -4,6 +4,6 @@ This test will be replaced with actual unit tests as the project develops.
 """
 
 
-def test_placeholder():
+def test_placeholder() -> None:
     """Placeholder test that always passes."""
     assert True

@@ -1,24 +1,26 @@
-# Oil Well Time Series API
+# Chat with Timeseries
 
-A REST API that serves synthetic oil well time-series data for demonstration and testing purposes. Built with Python 3.14, FastAPI, and SQLite.
+A monorepo demonstration project showcasing AI-powered chat interfaces for time-series data analysis.
 
 ## 🎯 Overview
 
-This API provides access to 1 year of realistic synthetic operational data for 3 sample oil wells, including:
-- Oil and gas production rates
-- Wellhead and tubing pressures  
-- Gas injection rates
+This repository contains multiple interconnected projects:
 
-**Key Features:**
+### 📊 [Time Series API](timeseries-api/)
+REST API serving synthetic oil well time-series data for demonstration and testing purposes. Provides access to 1 year of realistic synthetic operational data for 3 sample oil wells.
+
+**Features:**
 - Query raw timestamped data at minute-level granularity
 - Retrieve aggregated summaries (daily/monthly averages, sums, min, max)
 - Discover available wells and metrics
-- No authentication required (publicly accessible)
-- All data is synthetic (no real oilfield information)
+- Built with Python 3.14, FastAPI, and SQLite
+
+### 💬 AI Chat Frontend *(Coming Soon)*
+Natural language interface for querying and analyzing time-series data.
 
 ## 🚀 Quick Start
 
-See [specs/001-oil-well-api/quickstart.md](specs/001-oil-well-api/quickstart.md) for detailed setup instructions using Dev Containers.
+See [timeseries-api/README.md](timeseries-api/README.md) for API-specific documentation.
 
 ### Prerequisites
 
@@ -41,41 +43,13 @@ See [specs/001-oil-well-api/quickstart.md](specs/001-oil-well-api/quickstart.md)
 
 3. Start the API server:
    ```bash
-   uvicorn src.api.main:app --reload --port 8000
+   source timeseries-api/.venv/bin/activate
+   uvicorn timeseries-api.src.api.main:app --reload --port 8000
    ```
 
 4. Access API documentation:
    - Swagger UI: [http://localhost:8000/docs](http://localhost:8000/docs)
    - ReDoc: [http://localhost:8000/redoc](http://localhost:8000/redoc)
-
-## 📊 API Endpoints
-
-### Discovery
-- `GET /wells` - List all available wells
-- `GET /wells/{well_id}` - Get details for a specific well
-- `GET /metrics` - List all available metrics
-- `GET /wells/{well_id}/metrics` - Get metrics for a specific well
-
-### Time-Series Data
-- `GET /wells/{well_id}/data/raw` - Query raw time-series data
-  - Query params: `metric_name`, `start_timestamp`, `end_timestamp`
-- `GET /wells/{well_id}/data/aggregated` - Query aggregated data
-  - Query params: `metric_name`, `start_date`, `end_date`, `aggregation_type`
-
-## 🧪 Testing
-
-```bash
-# Run all tests
-pytest
-
-# Run with coverage
-pytest --cov=src --cov-report=html
-
-# Run specific test suites
-pytest tests/unit/
-pytest tests/integration/
-pytest tests/contract/
-```
 
 ## 🔧 Code Quality
 
@@ -90,16 +64,48 @@ ruff format src/ tests/
 ruff check --fix src/ tests/
 ```
 
+## 🛠️ Development
+
+From the repository root:
+
+```bash
+# Run tests
+make test
+
+# Lint code
+make lint
+
+# Fix linting issues and format
+make fix
+```
+
+## 📁 Project Structure
+
+```
+chat-with-timeseries-speckit/
+├── timeseries-api/          # Time Series API (Python/FastAPI)
+│   ├── src/                 # Source code
+│   ├── tests/               # Unit/integration tests
+│   ├── data/                # SQLite database
+│   ├── pyproject.toml       # Python dependencies
+│   ├── ruff.toml            # Linter config
+│   └── README.md            # API documentation
+├── specs/                   # Project specifications
+│   └── 001-oil-well-api/    # API specification
+├── .devcontainer/           # Dev Container config
+├── .githooks/               # Git hooks
+├── Makefile                 # Build commands
+└── README.md                # This file (monorepo overview)
+```
+
 ## 📚 Documentation
 
-- [Feature Specification](specs/001-oil-well-api/spec.md) - Requirements and user stories
-- [Implementation Plan](specs/001-oil-well-api/plan.md) - Architecture and technical decisions
-- [Data Model](specs/001-oil-well-api/data-model.md) - Database schema and Pydantic models
-- [API Contract](specs/001-oil-well-api/contracts/openapi.yaml) - OpenAPI specification
-- [Quick Start Guide](specs/001-oil-well-api/quickstart.md) - Setup and usage examples
+### Time Series API
+- [API README](timeseries-api/README.md) - API-specific documentation
 
 ## 🏗️ Tech Stack
 
+### Time Series API
 - **Python 3.14** - Latest Python version
 - **FastAPI** - Modern async web framework
 - **SQLite** - Embedded database (~2.5 GB for 7.9M data points)
