@@ -10,7 +10,7 @@
 
 - **[P]**: Can run in parallel (different files, no dependencies)
 - **[Story]**: User story label (US1, US2, US3)
-- All paths are absolute from repository root
+- All paths reference timeseries-api/ subdirectory (monorepo structure)
 
 ---
 
@@ -18,8 +18,8 @@
 
 **Purpose**: Project initialization and Dev Container setup (Constitution Principle VII requirement)
 
-- [X] T001 Create project structure: src/{models,services,api,db}, tests/{contract,integration,unit}
-- [X] T002 Create pyproject.toml with Python 3.14, FastAPI, uvicorn, pydantic, numpy, pandas, pytest, httpx, ruff
+- [X] T001 Create project structure: timeseries-api/src/{models,services,api,db}, timeseries-api/tests/{contract,integration,unit}
+- [X] T002 Create timeseries-api/pyproject.toml with Python 3.14, FastAPI, uvicorn, pydantic, numpy, pandas, pytest, httpx, ruff
 - [X] T003 [P] Create .devcontainer/devcontainer.json with Python 3.14 base image, uv installation, VS Code extensions
 - [X] T004 [P] Create .devcontainer/postCreate.sh script to install uv, dependencies, and initialize database
 - [X] T005 [P] Create ruff.toml with linting rules (E, W, F, I, N, UP, ANN, B, C4, SIM)
@@ -33,13 +33,13 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [X] T007 Create src/config.py with database path, data generation constants, and environment configuration
-- [X] T008 Create src/db/schema.sql with wells, metrics, and timeseries_data tables per data-model.md
-- [X] T009 Create src/db/database.py with SQLite connection management and get_db_connection() dependency
-- [X] T010 [P] Create src/models/__init__.py (package initialization)
-- [X] T011 [P] Create src/services/__init__.py (package initialization)
-- [X] T012 [P] Create src/api/__init__.py (package initialization)
-- [X] T013 [P] Create src/db/__init__.py (package initialization)
+- [X] T007 Create timeseries-api/src/config.py with database path, data generation constants, and environment configuration
+- [X] T008 Create timeseries-api/src/db/schema.sql with wells, metrics, and timeseries_data tables per data-model.md
+- [X] T009 Create timeseries-api/src/db/database.py with SQLite connection management and get_db_connection() dependency
+- [X] T010 [P] Create timeseries-api/src/models/__init__.py (package initialization)
+- [X] T011 [P] Create timeseries-api/src/services/__init__.py (package initialization)
+- [X] T012 [P] Create timeseries-api/src/api/__init__.py (package initialization)
+- [X] T013 [P] Create timeseries-api/src/db/__init__.py (package initialization)
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -53,14 +53,14 @@
 
 ### Data Layer for User Story 1
 
-- [X] T014 [P] [US1] Create src/models/well.py with Well Pydantic model (well_id pattern validation, enums for well_type)
-- [X] T015 [P] [US1] Create src/models/metric.py with Metric Pydantic model (data_type enum, optional typical_min/max)
-- [X] T016 [P] [US1] Create src/models/timeseries.py with TimeSeriesDataPoint Pydantic model (datetime validation, quality_flag enum)
-- [X] T017 [P] [US1] Create src/models/responses.py with RawDataResponse Pydantic model (data array + metadata)
+- [X] T014 [P] [US1] Create timeseries-api/src/models/well.py with Well Pydantic model (well_id pattern validation, enums for well_type)
+- [X] T015 [P] [US1] Create timeseries-api/src/models/metric.py with Metric Pydantic model (data_type enum, optional typical_min/max)
+- [X] T016 [P] [US1] Create timeseries-api/src/models/timeseries.py with TimeSeriesDataPoint Pydantic model (datetime validation, quality_flag enum)
+- [X] T017 [P] [US1] Create timeseries-api/src/models/responses.py with RawDataResponse Pydantic model (data array + metadata)
 
 ### Synthetic Data Generation for User Story 1
 
-- [X] T018 [US1] Create src/services/data_generator.py with SyntheticDataGenerator class
+- [X] T018 [US1] Create timeseries-api/src/services/data_generator.py with SyntheticDataGenerator class
 - [X] T019 [US1] Implement generate_well_metadata() method returning 3 wells with varied characteristics per FR-009
 - [X] T020 [US1] Implement generate_metric_definitions() method returning 5 metrics per FR-008
 - [X] T021 [US1] Implement generate_timeseries_data() method with numpy/pandas per research.md decision #1
@@ -72,7 +72,7 @@
 
 ### Database Initialization for User Story 1
 
-- [X] T027 [US1] Create src/db/seed.py script to execute schema.sql and populate database
+- [X] T027 [US1] Create timeseries-api/src/db/seed.py script to execute schema.sql and populate database
 - [X] T028 [US1] Implement seed_wells() function to insert 3 wells into wells table
 - [X] T029 [US1] Implement seed_metrics() function to insert 5 metrics into metrics table
 - [X] T030 [US1] Implement seed_timeseries_data() function to insert ~7.9M rows into timeseries_data table
@@ -81,7 +81,7 @@
 
 ### Query Service for User Story 1
 
-- [X] T033 [US1] Create src/services/query_service.py with QueryService class
+- [X] T033 [US1] Create timeseries-api/src/services/query_service.py with QueryService class
 - [X] T034 [US1] Implement get_raw_timeseries() method with SQL query per research.md decision #2
 - [X] T035 [US1] Add input validation: well_id format, metric_name exists, timestamp format ISO 8601
 - [X] T036 [US1] Implement response metadata: total_points, data_completeness calculation per FR-013
@@ -89,8 +89,8 @@
 
 ### API Endpoints for User Story 1
 
-- [X] T038 [US1] Create src/api/main.py with FastAPI app initialization, CORS, and OpenAPI metadata
-- [X] T039 [US1] Create src/api/timeseries.py router with /wells/{well_id}/data/raw endpoint
+- [X] T038 [US1] Create timeseries-api/src/api/main.py with FastAPI app initialization, CORS, and OpenAPI metadata
+- [X] T039 [US1] Create timeseries-api/src/api/timeseries.py router with /wells/{well_id}/data/raw endpoint
 - [X] T040 [US1] Implement GET /wells/{well_id}/data/raw handler with dependency injection per research.md decision #3
 - [X] T041 [US1] Add Query parameters: metric_name (required), start_timestamp (required), end_timestamp (required)
 - [X] T042 [US1] Wire QueryService.get_raw_timeseries() to endpoint handler
@@ -99,13 +99,13 @@
 
 ### Testing for User Story 1
 
-- [ ] T045 [P] [US1] Create tests/contract/test_openapi_compliance.py to validate responses match openapi.yaml schemas
-- [ ] T046 [P] [US1] Create tests/integration/test_timeseries_api.py with test_get_raw_data_success()
+- [ ] T045 [P] [US1] Create timeseries-api/tests/contract/test_openapi_compliance.py to validate responses match openapi.yaml schemas
+- [ ] T046 [P] [US1] Create timeseries-api/tests/integration/test_timeseries_api.py with test_get_raw_data_success()
 - [ ] T047 [P] [US1] Add test_get_raw_data_invalid_well_id() expecting HTTP 404
 - [ ] T048 [P] [US1] Add test_get_raw_data_invalid_timestamp_format() expecting HTTP 400
 - [ ] T049 [P] [US1] Add test_get_raw_data_empty_result() for time range with no data
-- [ ] T050 [P] [US1] Create tests/unit/test_data_generator.py to verify decline curves, seasonal variations, noise
-- [ ] T051 [P] [US1] Create tests/unit/test_query_service.py to test get_raw_timeseries() with mock database
+- [ ] T050 [P] [US1] Create timeseries-api/tests/unit/test_data_generator.py to verify decline curves, seasonal variations, noise
+- [ ] T051 [P] [US1] Create timeseries-api/tests/unit/test_query_service.py to test get_raw_timeseries() with mock database
 
 **Checkpoint**: User Story 1 complete - raw time-series data retrieval fully functional and independently testable
 
@@ -119,12 +119,12 @@
 
 ### Data Layer for User Story 2
 
-- [ ] T052 [P] [US2] Create src/models/aggregated.py with AggregatedDataPoint Pydantic model (aggregation_type enum)
-- [ ] T053 [P] [US2] Add AggregatedDataResponse to src/models/responses.py (data array + metadata)
+- [ ] T052 [P] [US2] Create timeseries-api/src/models/aggregated.py with AggregatedDataPoint Pydantic model (aggregation_type enum)
+- [ ] T053 [P] [US2] Add AggregatedDataResponse to timeseries-api/src/models/responses.py (data array + metadata)
 
 ### Aggregation Service for User Story 2
 
-- [ ] T054 [US2] Create src/services/aggregation.py with AggregationService class
+- [ ] T054 [US2] Create timeseries-api/src/services/aggregation.py with AggregationService class
 - [ ] T055 [US2] Implement compute_daily_average() method using SQL AVG() per research.md decision #2
 - [ ] T056 [US2] Implement compute_daily_max() method using SQL MAX()
 - [ ] T057 [US2] Implement compute_daily_min() method using SQL MIN()
@@ -135,7 +135,7 @@
 
 ### Query Service Extension for User Story 2
 
-- [ ] T062 [US2] Add get_aggregated_timeseries() method to src/services/query_service.py
+- [ ] T062 [US2] Add get_aggregated_timeseries() method to timeseries-api/src/services/query_service.py
 - [ ] T063 [US2] Validate aggregation_type against enum: daily_average, daily_max, daily_min, daily_sum, monthly_average
 - [ ] T064 [US2] Route to appropriate AggregationService method based on aggregation_type
 - [ ] T065 [US2] Implement response metadata: total_periods, average_data_completeness per FR-013
@@ -143,7 +143,7 @@
 
 ### API Endpoints for User Story 2
 
-- [ ] T067 [US2] Add GET /wells/{well_id}/data/aggregated endpoint to src/api/timeseries.py
+- [ ] T067 [US2] Add GET /wells/{well_id}/data/aggregated endpoint to timeseries-api/src/api/timeseries.py
 - [ ] T068 [US2] Add Query parameters: metric_name, start_date, end_date, aggregation_type
 - [ ] T069 [US2] Wire QueryService.get_aggregated_timeseries() to endpoint handler
 - [ ] T070 [US2] Return AggregatedDataResponse per contracts/openapi.yaml
@@ -151,12 +151,12 @@
 
 ### Testing for User Story 2
 
-- [ ] T072 [P] [US2] Add tests/integration/test_aggregated_api.py with test_get_aggregated_daily_average()
+- [ ] T072 [P] [US2] Add timeseries-api/tests/integration/test_aggregated_api.py with test_get_aggregated_daily_average()
 - [ ] T073 [P] [US2] Add test_get_aggregated_daily_max() verifying MAX aggregation
 - [ ] T074 [P] [US2] Add test_get_aggregated_monthly_average() verifying monthly grouping
 - [ ] T075 [P] [US2] Add test_get_aggregated_with_data_gaps() verifying data_completeness < 100%
 - [ ] T076 [P] [US2] Add test_get_aggregated_invalid_aggregation_type() expecting HTTP 400
-- [ ] T077 [P] [US2] Create tests/unit/test_aggregation.py to test each aggregation method with mock data
+- [ ] T077 [P] [US2] Create timeseries-api/tests/unit/test_aggregation.py to test each aggregation method with mock data
 
 **Checkpoint**: User Stories 1 AND 2 complete - both raw and aggregated data retrieval independently functional
 
@@ -170,7 +170,7 @@
 
 ### Query Service for User Story 3
 
-- [X] T078 [US3] Add get_all_wells() method to src/services/query_service.py returning all 3 wells
+- [X] T078 [US3] Add get_all_wells() method to timeseries-api/src/services/query_service.py returning all 3 wells
 - [X] T079 [US3] Add get_well_by_id(well_id) method returning single well or None
 - [X] T080 [US3] Add get_all_metrics() method returning all 5 metrics
 - [X] T081 [US3] Add get_metrics_for_well(well_id) method returning only metrics with data for that well per US3 scenario 3
@@ -178,26 +178,26 @@
 
 ### Data Layer for User Story 3
 
-- [X] T083 [P] [US3] Add WellListResponse to src/models/responses.py (wells array + total_count + metadata)
-- [X] T084 [P] [US3] Add MetricListResponse to src/models/responses.py (metrics array + total_count + metadata)
+- [X] T083 [P] [US3] Add WellListResponse to timeseries-api/src/models/responses.py (wells array + total_count + metadata)
+- [X] T084 [P] [US3] Add MetricListResponse to timeseries-api/src/models/responses.py (metrics array + total_count + metadata)
 
 ### API Endpoints for User Story 3
 
-- [X] T085 [US3] Create src/api/wells.py router with GET /wells endpoint
+- [X] T085 [US3] Create timeseries-api/src/api/wells.py router with GET /wells endpoint
 - [X] T086 [US3] Implement GET /wells handler returning WellListResponse per contracts/openapi.yaml
 - [X] T087 [US3] Add GET /wells/{well_id} endpoint returning single Well or HTTP 404
-- [X] T088 [US3] Create src/api/metrics.py router with GET /metrics endpoint
+- [X] T088 [US3] Create timeseries-api/src/api/metrics.py router with GET /metrics endpoint
 - [X] T089 [US3] Implement GET /metrics handler returning MetricListResponse
 - [X] T090 [US3] Add GET /wells/{well_id}/metrics endpoint returning metrics for specific well
-- [X] T091 [US3] Register wells and metrics routers in src/api/main.py
+- [X] T091 [US3] Register wells and metrics routers in timeseries-api/src/api/main.py
 
 ### Testing for User Story 3
 
-- [ ] T092 [P] [US3] Create tests/integration/test_wells_api.py with test_list_all_wells()
+- [ ] T092 [P] [US3] Create timeseries-api/tests/integration/test_wells_api.py with test_list_all_wells()
 - [ ] T093 [P] [US3] Add test_get_well_by_id_success() verifying single well retrieval
 - [ ] T094 [P] [US3] Add test_get_well_by_id_not_found() expecting HTTP 404
 - [ ] T095 [P] [US3] Add test_list_wells_empty_database() for edge case per US3 scenario 4
-- [ ] T096 [P] [US3] Create tests/integration/test_metrics_api.py with test_list_all_metrics()
+- [ ] T096 [P] [US3] Create timeseries-api/tests/integration/test_metrics_api.py with test_list_all_metrics()
 - [ ] T097 [P] [US3] Add test_get_well_metrics() verifying filtered metric list for specific well
 
 **Checkpoint**: All user stories (1, 2, 3) complete - full API functionality independently testable

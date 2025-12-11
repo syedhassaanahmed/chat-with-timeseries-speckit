@@ -88,13 +88,13 @@ chat-with-timeseries-speckit/
 │   ├── tests/               # Unit/integration tests
 │   ├── data/                # SQLite database
 │   ├── pyproject.toml       # Python dependencies
-│   ├── ruff.toml            # Linter config
 │   └── README.md            # API documentation
 ├── specs/                   # Project specifications
 │   └── 001-oil-well-api/    # API specification
 ├── .devcontainer/           # Dev Container config
 ├── .githooks/               # Git hooks
 ├── Makefile                 # Build commands
+├── ruff.toml                # Shared linter config
 └── README.md                # This file (monorepo overview)
 ```
 

@@ -12,10 +12,10 @@ test:
 
 lint:
 	@echo "Running ruff linter..."
-	ruff check --config timeseries-api/ruff.toml timeseries-api/src/ timeseries-api/tests/
+	ruff check timeseries-api/src/ timeseries-api/tests/
 
 fix:
 	@echo "Fixing linting issues..."
-	ruff check --config timeseries-api/ruff.toml timeseries-api/src/ timeseries-api/tests/ --fix
+	ruff check timeseries-api/src/ timeseries-api/tests/ --fix
 	@echo "Formatting code..."
-	ruff format --config timeseries-api/ruff.toml timeseries-api/src/ timeseries-api/tests/
+	ruff format timeseries-api/src/ timeseries-api/tests/

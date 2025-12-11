@@ -75,53 +75,52 @@ specs/[###-feature]/
 ### Source Code (repository root)
 
 ```text
-src/
-├── models/               # Pydantic models for Well, Metric, TimeSeriesDataPoint, etc.
-│   ├── __init__.py
-│   ├── well.py
-│   ├── metric.py
-│   ├── timeseries.py
-│   └── responses.py
-├── services/             # Business logic layer
-│   ├── __init__.py
-│   ├── data_generator.py  # Synthetic data generation
-│   ├── query_service.py   # Query logic for raw/aggregated data
-│   └── aggregation.py     # Aggregation algorithms
-├── api/                  # FastAPI routes
-│   ├── __init__.py
-│   ├── main.py           # FastAPI app initialization
-│   ├── wells.py          # /wells endpoints
-│   ├── metrics.py        # /metrics endpoints
-│   └── timeseries.py     # /wells/{id}/data/* endpoints
-├── db/                   # Database layer
-│   ├── __init__.py
-│   ├── database.py       # SQLite connection management
-│   ├── schema.sql        # Database schema
-│   └── seed.py           # Initialize and populate database
-└── config.py             # Configuration (env vars, constants)
-
-tests/
-├── contract/             # OpenAPI schema validation tests
-│   └── test_openapi_compliance.py
-├── integration/          # API endpoint integration tests
-│   ├── test_wells_api.py
-│   ├── test_metrics_api.py
-│   └── test_timeseries_api.py
-└── unit/                 # Unit tests for services and models
-    ├── test_aggregation.py
-    ├── test_data_generator.py
-    └── test_models.py
-
-pyproject.toml            # uv project configuration
-uv.lock                   # Dependency lock file
-ruff.toml                 # Ruff linter/formatter config
-README.md                 # Project overview and setup instructions
-.devcontainer/            # Dev Container configuration (REQUIRED)
-├── devcontainer.json    # Container definition with Python 3.14, uv, extensions
-└── postCreate.sh        # Database initialization script
+/workspaces/chat-with-timeseries-speckit/  # Repository root
+├── ruff.toml                              # Shared linter config for all projects
+├── Makefile                               # Shared build commands (test, lint, fix)
+├── .githooks/                             # Git hooks
+│   └── pre-commit                         # Run lint and test before commits
+├── .devcontainer/                         # Dev Container configuration (REQUIRED)
+│   ├── devcontainer.json                  # Container with Python 3.14, uv, extensions
+│   └── postCreate.sh                      # Auto-install deps and seed database
+├── specs/                                 # Feature specifications
+│   └── 001-oil-well-api/                  # This feature
+│       ├── plan.md, spec.md, research.md, etc.
+│       └── contracts/openapi.yaml
+└── timeseries-api/                        # API project subdirectory
+    ├── README.md                          # API-specific documentation
+    ├── pyproject.toml                     # uv project configuration
+    ├── data/                              # SQLite database location
+    │   └── timeseries.db                  # ~2.5 GB, 7.9M rows
+    ├── src/
+    │   ├── config.py                      # Configuration (3 wells, 5 metrics, 1 year)
+    │   ├── models/                        # Pydantic models
+    │   │   ├── __init__.py
+    │   │   ├── well.py                    # Well model
+    │   │   ├── metric.py                  # Metric model
+    │   │   ├── timeseries.py              # TimeSeriesDataPoint model
+    │   │   └── responses.py               # Response models (Raw, WellList, MetricList)
+    │   ├── services/                      # Business logic
+    │   │   ├── __init__.py
+    │   │   ├── data_generator.py          # Synthetic data with decline curves
+    │   │   └── query_service.py           # Query logic for raw data
+    │   ├── api/                           # FastAPI routes
+    │   │   ├── __init__.py
+    │   │   ├── main.py                    # App initialization
+    │   │   ├── wells.py                   # /wells endpoints
+    │   │   ├── metrics.py                 # /metrics endpoints
+    │   │   └── timeseries.py              # /wells/{id}/data/raw endpoint
+    │   └── db/                            # Database layer
+    │       ├── __init__.py
+    │       ├── database.py                # SQLite connection management
+    │       ├── schema.sql                 # Database schema
+    │       └── seed.py                    # Initialize and seed database
+    └── tests/
+        ├── contract/                      # Placeholder (empty)
+        ├── integration/                   # Placeholder (empty)
+        └── unit/
+            └── test_placeholder.py        # Placeholder test for pre-commit
 ```
-
-**Structure Decision**: Single backend API project. No frontend or mobile components. This is a pure REST API service with synthetic data generation, SQLite storage, and FastAPI routes. The modular structure separates models (data schemas), services (business logic), api (HTTP layer), and db (persistence) to support independent testing and future extensibility.
 
 ## Complexity Tracking
 
