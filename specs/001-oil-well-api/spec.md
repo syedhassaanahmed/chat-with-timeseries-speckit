@@ -2,7 +2,7 @@
 
 **Feature Branch**: `001-oil-well-api`  
 **Created**: 2025-12-09  
-**Status**: Draft  
+**Status**: Completed  
 **Input**: User description: "Oil Well Time Series API – a public API that serves historical time-series data for oil wells, using synthetic data. The API will provide endpoints to retrieve both raw and aggregated time series data (oil production, gas injection, pressures, etc.) for a set of sample wells."
 
 ## User Scenarios & Testing *(mandatory)*

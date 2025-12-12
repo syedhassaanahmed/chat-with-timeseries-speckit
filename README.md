@@ -34,7 +34,6 @@ See [timeseries-api/README.md](timeseries-api/README.md) for API-specific docume
    ```bash
    git clone https://github.com/syedhassaanahmed/chat-with-timeseries-speckit.git
    cd chat-with-timeseries-speckit
-   git checkout 001-oil-well-api
    ```
 
 2. Open in VS Code and reopen in Dev Container:
